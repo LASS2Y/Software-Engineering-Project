@@ -1,6 +1,21 @@
-﻿namespace KitBox.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
-public partial class MainViewModel : ViewModelBase
+namespace KitBox.ViewModels;
+
+public partial class MainViewModel : ObservableObject
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
+    [ObservableProperty]
+    private ViewModelBase _currentPage;
+    
+    private readonly HomePageViewModel _homePage;
+   
+
+    public MainViewModel()
+    {
+        _homePage = new HomePageViewModel(this);
+        
+
+        CurrentPage = _homePage; // page par défaut
+    }
 }
