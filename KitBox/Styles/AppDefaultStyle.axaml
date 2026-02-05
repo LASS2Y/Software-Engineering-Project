@@ -8,7 +8,27 @@
 
     <!-- Add Styles Here -->
     <Style Selector="Grid.MenuBar">
-        <Setter Property="Height" Value="100"></Setter>
+        <Setter Property="Height" Value="125"></Setter>
         <Setter Property="Background" Value="Blue"></Setter>
+    </Style>
+    
+    <Style Selector="Button.FirstTopic">
+        <Setter Property="Background" Value="Black"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="Width" Value="450"></Setter>
+        <Setter Property="Height" Value="500"></Setter>
+    </Style>
+    
+    <Style Selector="Label.icon">
+        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        <Setter Property="FontFamily" Value="{DynamicResource Phosphor}"></Setter>
+        <Setter Property="FontSize" Value="36"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
+    </Style>
+    
+    <Style Selector="Button.nav-button">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="CornerRadius" Value="40"/>
     </Style>
 </Styles>
