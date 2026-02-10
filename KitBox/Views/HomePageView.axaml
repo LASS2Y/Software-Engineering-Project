@@ -37,9 +37,6 @@
                 
                 <StackPanel  Grid.Column="2" Orientation="Horizontal" Spacing="10">
                     <Button Classes="nav-button">
-                        <Label Classes="icon" Content="&#xE4C2;"></Label>
-                    </Button>
-                    <Button Classes="nav-button">
                         <Label Classes="icon" Content="&#xE41E;"></Label>
                     </Button>
                     <Button Classes="nav-button">
@@ -112,12 +109,7 @@
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
 
-                                <Border Width="300"
-                                        Height="500"
-                                        Background="White"
-                                        CornerRadius="16"
-                                        Padding="12"
-                                        BoxShadow="0 4 12 #20000000">
+                                <Border Classes="tendances">
                                     <StackPanel>
                                         <TextBlock Text="Locker 1"
                                                    FontWeight="Bold"
@@ -130,11 +122,33 @@
                                     </StackPanel>
                                 </Border>
 
-                                <Border Width="300"
-                                        Background="White"
-                                        CornerRadius="16"
-                                        Padding="12"
-                                        BoxShadow="0 4 12 #20000000">
+                                <Border Classes="tendances">
+                                    <StackPanel>
+                                        <TextBlock Text="Locker 2"
+                                                   FontWeight="Bold"
+                                                   Foreground="Black"/>
+                                        <TextBlock Text="À partir de 90 €"
+                                                   Foreground="Black"
+                                                   Margin="0,4,0,8"/>
+                                        <Button Content="Commander"
+                                                Foreground="Black"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <Border Classes="tendances">
+                                    <StackPanel>
+                                        <TextBlock Text="Locker 2"
+                                                   FontWeight="Bold"
+                                                   Foreground="Black"/>
+                                        <TextBlock Text="À partir de 90 €"
+                                                   Foreground="Black"
+                                                   Margin="0,4,0,8"/>
+                                        <Button Content="Commander"
+                                                Foreground="Black"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <Border Classes="tendances">
                                     <StackPanel>
                                         <TextBlock Text="Locker 2"
                                                    FontWeight="Bold"
