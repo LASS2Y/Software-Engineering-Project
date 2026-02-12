@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\branl\\Documents\\Cours ECAM\\Bloc 3\\Software-Engineering-Project\\KitBox\\KitBox.csproj": {}
+    "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\KitBox.csproj": {}
   },
   "projects": {
-    "C:\\Users\\branl\\Documents\\Cours ECAM\\Bloc 3\\Software-Engineering-Project\\KitBox\\KitBox.csproj": {
+    "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\KitBox.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\branl\\Documents\\Cours ECAM\\Bloc 3\\Software-Engineering-Project\\KitBox\\KitBox.csproj",
+        "projectUniqueName": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\KitBox.csproj",
         "projectName": "KitBox",
-        "projectPath": "C:\\Users\\branl\\Documents\\Cours ECAM\\Bloc 3\\Software-Engineering-Project\\KitBox\\KitBox.csproj",
-        "packagesPath": "C:\\Users\\branl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\branl\\Documents\\Cours ECAM\\Bloc 3\\Software-Engineering-Project\\KitBox\\obj\\",
+        "projectPath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\KitBox.csproj",
+        "packagesPath": "C:\\Users\\HP PRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\branl\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\HP PRO\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
