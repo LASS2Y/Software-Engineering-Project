@@ -12,4 +12,10 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
+             
+    <Application.Resources>
+        <FontFamily x:Key="AkkoPro">/Assets/Fonts/AkkoPro-Regular.ttf#Akko Pro</FontFamily>
+        <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
+        <FontFamily x:Key="PhosphorFill">/Assets/Fonts/Phosphor-Fill.ttf#Phosphor-Fill</FontFamily>
+    </Application.Resources>
 </Application>
