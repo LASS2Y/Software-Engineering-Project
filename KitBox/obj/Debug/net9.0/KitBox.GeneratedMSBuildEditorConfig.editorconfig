@@ -24,5 +24,14 @@ build_property.EnableCodeStyleSeverity =
 [C:/Users/branl/Documents/Cours ECAM/Bloc 3/Software-Engineering-Project/KitBox/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/branl/Documents/Cours ECAM/Bloc 3/Software-Engineering-Project/KitBox/Styles/AppDefaultStyle.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/branl/Documents/Cours ECAM/Bloc 3/Software-Engineering-Project/KitBox/Views/HomePageView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/branl/Documents/Cours ECAM/Bloc 3/Software-Engineering-Project/KitBox/Views/MainView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/branl/Documents/Cours ECAM/Bloc 3/Software-Engineering-Project/KitBox/Views/StartPageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

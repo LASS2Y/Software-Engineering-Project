@@ -1,0 +1,81 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="KitBox.Views.StartPageView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:StartPageViewModel">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"></StyleInclude>
+    </UserControl.Styles>
+    
+    <Grid Background="#F5F7FA">
+        <Border Background="White"
+                Width="800" 
+                Height="600"
+                CornerRadius="35"
+                BorderThickness="0.5"
+                BorderBrush="Black">
+            
+            <Grid RowDefinitions="*,Auto"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <TextBlock Text="KitBox"
+                           FontSize="60"
+                           FontStyle="Italic"
+                           FontWeight="Bold"
+                           Foreground="#4F46E5"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 0 120"></TextBlock>
+                
+                <StackPanel Grid.Row="1" Spacing="20">
+                    
+                    <Button Width="750"
+                            Height="100"
+                            Background="#4F46E5"
+                            BorderThickness="0.5"
+                            BorderBrush="Black"
+                            CornerRadius="50"
+                            Command="{Binding GoToHomePageCommand}">
+                        
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Label Content=""
+                                   Foreground="White"></Label>
+                            <TextBlock Text="Customer"
+                                       Foreground="White"
+                                       FontSize="36"
+                                       FontWeight="DemiBold"
+                                       FontStyle="Italic"></TextBlock>
+                        </StackPanel>
+                    </Button>
+                
+                    <Button Width="750"
+                            Height="100"
+                            Background="#F5F7FA"
+                            BorderThickness="0.5"
+                            BorderBrush="Black"
+                            CornerRadius="50">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Label Content=""
+                                   Foreground="Black"></Label>
+                            <TextBlock Text="Owner"
+                                       Foreground="Black"
+                                       FontSize="36"
+                                       FontWeight="DemiBold"
+                                       FontStyle="Italic"></TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            
+        </Border>
+    </Grid>
+    
+
+</UserControl>
