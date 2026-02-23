@@ -17,6 +17,6 @@ public partial class MainViewModel : ObservableObject
         _homePage = new HomePageViewModel(this);
         _startPage = new StartPageViewModel(this);
 
-        CurrentPage = _startPage; // page par défaut
+        CurrentPage = _startPage; // default page
     }
 }
