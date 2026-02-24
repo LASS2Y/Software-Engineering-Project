@@ -2,18 +2,20 @@
 
 namespace KitBox.ViewModels;
 
-public partial class StartPageViewModel:ViewModelBase
+public partial class StartPageViewModel : ViewModelBase
 {
-    private readonly MainViewModel _mainViewModel;
-    
-    public StartPageViewModel(MainViewModel mainViewModel)
+    private readonly MainViewModel _main;
+
+    public StartPageViewModel(MainViewModel main)
     {
-        _mainViewModel = mainViewModel;
+        _main = main;
     }
 
     [RelayCommand]
     public void GoToHomePage()
-    {
-        _mainViewModel.CurrentPage = new HomePageViewModel(_mainViewModel);
-    }
+        => _main.GoToCustomerSelection();
+
+    [RelayCommand]
+    public void GoToOwnerDashboard()
+        => _main.GoToOwnerDashboard();
 }

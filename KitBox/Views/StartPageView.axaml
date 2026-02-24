@@ -58,7 +58,8 @@
                             Background="#F5F7FA"
                             BorderThickness="0.5"
                             BorderBrush="Black"
-                            CornerRadius="50">
+                            CornerRadius="50"
+                            Command="{Binding GoToOwnerDashboardCommand}">
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">

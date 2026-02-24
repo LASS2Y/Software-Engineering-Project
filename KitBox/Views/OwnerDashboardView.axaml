@@ -1,0 +1,123 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="650"
+             x:Class="KitBox.Views.OwnerDashboardView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:OwnerDashboardViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*" Background="#F5F7FA">
+
+        <!-- Header -->
+        <Border Background="#374151" Padding="20,16" CornerRadius="0,0,20,20">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
+                </Button>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Owner Dashboard – Stock Management"
+                               FontSize="20" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding LowStockCount, StringFormat='{}{0} item(s) below minimum stock'}"
+                               Foreground="#FCA5A5" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+                <Button Grid.Column="2"
+                        Background="White" Foreground="#374151"
+                        CornerRadius="8" Padding="12,6"
+                        Command="{Binding RefreshCommand}"
+                        Content="⟳  Refresh"/>
+            </Grid>
+        </Border>
+
+        <!-- Stock table -->
+        <ScrollViewer Grid.Row="1" Margin="24,16">
+            <StackPanel Spacing="12">
+
+            <!-- DB / load error -->
+            <Border IsVisible="{Binding LoadError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#FEE2E2" CornerRadius="12" Padding="16">
+                <TextBlock Text="{Binding LoadError}"
+                           Foreground="#DC2626"
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <Border Background="White" CornerRadius="14"
+                    BoxShadow="0 2 10 0 #12000000" Padding="20">
+                <StackPanel Spacing="8">
+
+                    <!-- Table header -->
+                    <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
+                        <Grid ColumnDefinitions="*,100,80,80,80,100,120">
+                            <TextBlock Text="Part Name" FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="1" Text="Type" FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="2" Text="Reference" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="In Stock" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Min." FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Status" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="6" Text="New Quantity" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Rows -->
+                    <ItemsControl ItemsSource="{Binding StockItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:StockItemViewModel">
+                                <Border Padding="12,6" CornerRadius="6"
+                                        Background="{Binding RowBackground}">
+                                    <Grid ColumnDefinitions="*,100,80,80,80,100,120">
+                                        <TextBlock Text="{Binding Part.Name}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding PartType}"
+                                                   Foreground="#64748B" FontSize="12"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Part.Reference}"
+                                                   FontSize="12" Foreground="#94A3B8"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding Part.StockQuantity}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4"
+                                                   Text="{Binding Part.MinimumStock}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <Border Grid.Column="5"
+                                                CornerRadius="10" Padding="8,3"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding StockBadge}" FontSize="12"
+                                                       Foreground="{Binding BadgeForeground}"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="6"
+                                                    Orientation="Horizontal" Spacing="6"
+                                                    HorizontalAlignment="Center">
+                                            <NumericUpDown Value="{Binding NewQuantity}"
+                                                           Minimum="0"
+                                                           Width="80" Height="32"/>
+                                            <Button Content="Save"
+                                                    Height="32" Padding="8,0"
+                                                    Background="#4F46E5"
+                                                    Foreground="White"
+                                                    CornerRadius="6"
+                                                    Command="{Binding SaveStockCommand}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

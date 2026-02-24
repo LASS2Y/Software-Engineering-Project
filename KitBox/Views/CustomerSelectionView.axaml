@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="KitBox.Views.CustomerSelectionView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:CustomerSelectionViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid Background="#F5F7FA" RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Border Background="#4F46E5" Padding="24" CornerRadius="0,0,24,24">
+            <Grid ColumnDefinitions="Auto,*">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}" VerticalAlignment="Center">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="16"/>
+                </Button>
+                <TextBlock Grid.Column="1" Text="Customer Information"
+                           FontSize="26" FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Form -->
+        <Border Grid.Row="1"
+                Background="White"
+                MaxWidth="540"
+                Margin="0,40,0,0"
+                Padding="40"
+                CornerRadius="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                BoxShadow="0 4 24 0 #1A000000">
+
+            <StackPanel Spacing="20">
+
+                <TextBlock Text="Please enter the customer's details"
+                           FontSize="15"
+                           Foreground="#64748B"
+                           TextWrapping="Wrap"/>
+
+                <!-- First name -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="First Name *" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding FirstName}"
+                             Watermark="e.g. John"
+                             CornerRadius="10"/>
+                </StackPanel>
+
+                <!-- Last name -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Last Name *" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding LastName}"
+                             Watermark="e.g. Smith"
+                             CornerRadius="10"/>
+                </StackPanel>
+
+                <!-- Email -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Email Address *" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Email}"
+                             Watermark="john.smith@example.com"
+                             CornerRadius="10"/>
+                </StackPanel>
+
+                <!-- Phone -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Phone Number" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Phone}"
+                             Watermark="+32 000 000 000"
+                             CornerRadius="10"/>
+                </StackPanel>
+
+                <!-- Validation error -->
+                <Border IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Background="#FEE2E2" CornerRadius="8" Padding="12">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#DC2626"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Continue button -->
+                <Button HorizontalAlignment="Stretch"
+                        Height="52"
+                        Background="#4F46E5"
+                        Foreground="White"
+                        CornerRadius="12"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Content="Continue →"
+                        Command="{Binding ContinueCommand}"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

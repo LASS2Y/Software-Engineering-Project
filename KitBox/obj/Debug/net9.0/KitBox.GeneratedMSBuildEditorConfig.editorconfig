@@ -27,10 +27,22 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Styles/AppDefaultStyle.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/CabinetConfigurationView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/CustomerSelectionView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/HomePageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/MainView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/OrderSummaryView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/OwnerDashboardView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/KitBox/Views/StartPageView.axaml]

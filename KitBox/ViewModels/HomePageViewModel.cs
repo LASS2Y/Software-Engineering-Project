@@ -1,14 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 
 namespace KitBox.ViewModels;
 
-public partial class HomePageViewModel: ViewModelBase
+public partial class HomePageViewModel : ViewModelBase
 {
-    private readonly MainViewModel _mainViewModel;
+    private readonly MainViewModel _main;
 
-    public HomePageViewModel(MainViewModel mainViewModel)
+    public HomePageViewModel(MainViewModel main)
     {
-        _mainViewModel = mainViewModel;
+        _main = main;
     }
+
+    [RelayCommand]
+    public void NewOrder()
+        => _main.GoToCustomerSelection();
 }
