@@ -12,12 +12,13 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-        // Database connection – update credentials to match your MariaDB instance
+        // Database credentials loaded from KitBox/.env
         var db = new DatabaseConnection(
-            server:   "localhost",
-            database: "kitbox",
-            user:     "root",
-            password: "Arebi30715");
+            server:   EnvConfig.Get("DB_SERVER",   "localhost"),
+            database: EnvConfig.Get("DB_NAME",     "kitbox"),
+            user:     EnvConfig.Get("DB_USER",     "root"),
+            password: EnvConfig.Get("DB_PASSWORD", ""),
+            port:     int.Parse(EnvConfig.Get("DB_PORT", "3306")));
 
         Services = new AppServices(db);
         CurrentPage = new StartPageViewModel(this);
