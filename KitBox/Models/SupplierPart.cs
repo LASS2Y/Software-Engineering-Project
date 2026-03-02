@@ -27,4 +27,19 @@ public class SupplierPart
     /// Navigation property to the supplier.
     /// </summary>
     public Supplier? Supplier { get; set; }
+
+    /// <summary>
+    /// Name of the supplied part (populated by joined queries).
+    /// </summary>
+    public string PartName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Reference code of the supplied part (populated by joined queries).
+    /// </summary>
+    public string PartReference { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Type discriminator of the supplied part (populated by joined queries).
+    /// </summary>
+    public string PartType { get; set; } = string.Empty;
 }

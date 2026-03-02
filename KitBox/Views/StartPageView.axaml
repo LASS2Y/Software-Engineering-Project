@@ -72,6 +72,26 @@
                                        FontStyle="Italic"></TextBlock>
                         </StackPanel>
                     </Button>
+
+                    <Button Width="750"
+                            Height="100"
+                            Background="#7C3AED"
+                            BorderThickness="0.5"
+                            BorderBrush="Black"
+                            CornerRadius="50"
+                            Command="{Binding GoToSupplierCatalogCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Label Content=""
+                                   Foreground="White"></Label>
+                            <TextBlock Text="Secretary – Supplier Catalog"
+                                       Foreground="White"
+                                       FontSize="36"
+                                       FontWeight="DemiBold"
+                                       FontStyle="Italic"></TextBlock>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
             

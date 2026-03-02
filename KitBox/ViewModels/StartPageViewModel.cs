@@ -18,4 +18,8 @@ public partial class StartPageViewModel : ViewModelBase
     [RelayCommand]
     public void GoToOwnerDashboard()
         => _main.GoToOwnerDashboard();
+
+    [RelayCommand]
+    public void GoToSupplierCatalog()
+        => _main.GoToSupplierCatalog();
 }

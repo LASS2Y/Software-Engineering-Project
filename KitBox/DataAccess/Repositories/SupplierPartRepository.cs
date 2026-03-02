@@ -19,6 +19,39 @@ public class SupplierPartRepository : ISupplierPartRepository
         _db = db;
     }
 
+    public List<SupplierPart> GetAll()
+    {
+        var results = new List<SupplierPart>();
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"SELECT sp.id, sp.supplier_id, sp.part_id, sp.price, sp.delivery_days,
+                     s.name AS supplier_name, s.contact_email, s.phone,
+                     p.name AS part_name, p.reference AS part_reference, p.part_type
+              FROM supplier_part sp
+              JOIN supplier s ON s.id = sp.supplier_id
+              JOIN part     p ON p.id = sp.part_id
+              ORDER BY s.name, p.name",
+            connection);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            var sp = MapSupplierPart(reader);
+            sp.Supplier = new Supplier
+            {
+                Id           = reader.GetInt32("supplier_id"),
+                Name         = reader.GetString("supplier_name"),
+                ContactEmail = reader.GetString("contact_email"),
+                Phone        = reader.IsDBNull(reader.GetOrdinal("phone")) ? string.Empty : reader.GetString("phone")
+            };
+            sp.PartName      = reader.GetString("part_name");
+            sp.PartReference = reader.GetString("part_reference");
+            sp.PartType      = reader.GetString("part_type");
+            results.Add(sp);
+        }
+        return results;
+    }
+
     public List<SupplierPart> GetByPartId(int partId)
     {
         var results = new List<SupplierPart>();

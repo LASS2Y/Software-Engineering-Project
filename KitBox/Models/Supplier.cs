@@ -21,4 +21,6 @@ public class Supplier
     /// Catalog of parts this supplier can provide, with prices and delivery times.
     /// </summary>
     public List<SupplierPart> SupplierParts { get; set; } = new();
+
+    public override string ToString() => Name;
 }

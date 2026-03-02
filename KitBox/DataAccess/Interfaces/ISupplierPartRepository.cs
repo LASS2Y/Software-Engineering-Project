@@ -9,6 +9,7 @@ namespace KitBox.DataAccess.Interfaces;
 /// </summary>
 public interface ISupplierPartRepository
 {
+    List<SupplierPart> GetAll();
     List<SupplierPart> GetByPartId(int partId);
     List<SupplierPart> GetBySupplierId(int supplierId);
     SupplierPart? GetBestSupplierForPart(int partId);
