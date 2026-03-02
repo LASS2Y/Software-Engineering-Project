@@ -3,4 +3,3 @@ Kitbox/.idea/
 *.iml
 bin/
 obj/
-.env
