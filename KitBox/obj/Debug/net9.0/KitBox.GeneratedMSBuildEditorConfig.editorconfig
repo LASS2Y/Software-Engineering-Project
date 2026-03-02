@@ -39,6 +39,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/Kitbox/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/Kitbox/Views/OrderHistoryView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/projet génie logiciel/Software-Engineering-Project/Kitbox/Views/OrderSummaryView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

@@ -24,6 +24,10 @@ public partial class SecretaryMenuViewModel : ViewModelBase
         => _main.GoToOwnerDashboard();
 
     [RelayCommand]
+    public void GoToOrderHistory()
+        => _main.GoToOrderHistory();
+
+    [RelayCommand]
     public void Back()
         => _main.NavigateTo(new StartPageViewModel(_main));
 }

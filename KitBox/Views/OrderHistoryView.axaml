@@ -1,0 +1,181 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1050" d:DesignHeight="700"
+             x:Class="KitBox.Views.OrderHistoryView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:OrderHistoryViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*" Background="#F5F7FA">
+
+        <!-- ═══════════════ HEADER ═══════════════ -->
+        <Border Background="#0F766E" Padding="20,16" CornerRadius="0,0,20,20">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
+                </Button>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Order History"
+                               FontSize="22" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalOrders, StringFormat='{}{0} order(s)'}"
+                               Foreground="#99F6E4" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+                <Button Grid.Column="2"
+                        Background="White" Foreground="#0F766E"
+                        CornerRadius="8" Padding="12,6"
+                        Command="{Binding RefreshCommand}"
+                        Content="⟳  Refresh"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════ TOOLBAR ═══════════════ -->
+        <StackPanel Grid.Row="1" Margin="24,12,24,0" Spacing="10">
+
+            <!-- Status message -->
+            <Border IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#D1FAE5" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#065F46"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <!-- Load error -->
+            <Border IsVisible="{Binding LoadError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#FEE2E2" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding LoadError}" Foreground="#DC2626"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <!-- Filter -->
+            <Border Background="White" CornerRadius="12" Padding="14,10"
+                    BoxShadow="0 1 4 0 #10000000">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="Filter by status:" VerticalAlignment="Center"
+                               FontWeight="SemiBold" Foreground="#4B5563"/>
+                    <ComboBox ItemsSource="{Binding FilterOptions}"
+                              SelectedItem="{Binding SelectedFilter}"
+                              Width="200" Height="34"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- ═══════════════ TABLE ═══════════════ -->
+        <ScrollViewer Grid.Row="2" Margin="24,12,24,16">
+            <Border Background="White" CornerRadius="14"
+                    BoxShadow="0 2 10 0 #12000000" Padding="20">
+                <StackPanel Spacing="6">
+
+                    <!-- Header row -->
+                    <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
+                        <Grid ColumnDefinitions="55,130,130,80,70,80,80,80,90,Auto">
+                            <TextBlock            Text="#"          FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="1" Text="Customer"   FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="2" Text="Email"      FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="3" Text="Date"       FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Parts"      FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Total (€)"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="6" Text="Deposit"    FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="7" Text="Available"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="8" Text="Status"     FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="9" Text="Actions"    FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Data rows -->
+                    <ItemsControl ItemsSource="{Binding Orders}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:OrderItemViewModel">
+                                <Border Padding="12,6" CornerRadius="6"
+                                        Margin="0,2">
+                                    <Grid ColumnDefinitions="55,130,130,80,70,80,80,80,90,Auto"
+                                          RowDefinitions="Auto,Auto">
+
+                                        <!-- Row 0 – main data -->
+                                        <TextBlock Text="{Binding OrderId}"
+                                                   FontWeight="Bold" Foreground="#0F766E"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding CustomerName}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding CustomerEmail}"
+                                                   FontSize="12" Foreground="#64748B"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding OrderDate}"
+                                                   FontSize="12" HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding TotalParts}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5"
+                                                   Text="{Binding TotalAmount, StringFormat='{}{0:F2}'}"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6"
+                                                   Text="{Binding Deposit, StringFormat='{}{0:F2}', TargetNullValue='—'}"
+                                                   HorizontalAlignment="Right" FontSize="12"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="7" Text="{Binding AvailableDate}"
+                                                   FontSize="12" HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <Border Grid.Column="8" CornerRadius="12" Padding="8,4"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Background="{Binding StatusBackground}">
+                                            <TextBlock Text="{Binding StatusText}"
+                                                       FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{Binding StatusColor}"/>
+                                        </Border>
+
+                                        <!-- Actions (wrap to avoid overcrowding) -->
+                                        <StackPanel Grid.Column="9" Orientation="Horizontal"
+                                                    Spacing="4" VerticalAlignment="Center">
+                                            <Button Content="✓ Available"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#D1FAE5" Foreground="#065F46"
+                                                    CornerRadius="6"
+                                                    Command="{Binding MarkAvailableCommand}"
+                                                    IsVisible="{Binding CanMarkAvailable}"/>
+                                            <Button Content="📦 Delivered"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#DBEAFE" Foreground="#1E40AF"
+                                                    CornerRadius="6"
+                                                    Command="{Binding MarkDeliveredCommand}"
+                                                    IsVisible="{Binding CanMarkDelivered}"/>
+                                            <Button Content="🧾 Bill"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#FEF9C3" Foreground="#854D0E"
+                                                    CornerRadius="6"
+                                                    Command="{Binding GenerateBillCommand}"
+                                                    IsVisible="{Binding CanGenerateBill}"/>
+                                            <Button Content="✕ Cancel"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#FEE2E2" Foreground="#DC2626"
+                                                    CornerRadius="6"
+                                                    Command="{Binding CancelOrderCommand}"
+                                                    IsVisible="{Binding CanCancel}"/>
+                                        </StackPanel>
+
+                                        <!-- Row 1 – Bill info (subtle) -->
+                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="10"
+                                                   Text="{Binding BillInfo}"
+                                                   FontSize="11" Foreground="#94A3B8"
+                                                   IsVisible="{Binding HasBill}"
+                                                   Margin="0,2,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -50,6 +50,46 @@ public class OrderRepository : IOrderRepository
         return orders;
     }
 
+    public List<Order> GetAllWithDetails()
+    {
+        var orders = new List<Order>();
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"SELECT o.id, o.customer_id, o.bill_id, o.order_date, o.deposit,
+                     o.available_date, o.status,
+                     c.first_name, c.last_name, c.email, c.phone,
+                     COALESCE(SUM(ol.quantity * ol.unit_price), 0) AS total_amount,
+                     COALESCE(SUM(ol.quantity), 0) AS total_parts
+              FROM customer_order o
+              LEFT JOIN customer c ON c.id = o.customer_id
+              LEFT JOIN order_line ol ON ol.order_id = o.id
+              GROUP BY o.id
+              ORDER BY o.order_date DESC, o.id DESC",
+            connection);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            var order = MapOrder(reader);
+            order.Customer = new Customer
+            {
+                Id        = order.CustomerId,
+                FirstName = reader.IsDBNull(reader.GetOrdinal("first_name")) ? "" : reader.GetString("first_name"),
+                LastName  = reader.IsDBNull(reader.GetOrdinal("last_name"))  ? "" : reader.GetString("last_name"),
+                Email     = reader.IsDBNull(reader.GetOrdinal("email"))      ? "" : reader.GetString("email"),
+                Phone     = reader.IsDBNull(reader.GetOrdinal("phone"))      ? "" : reader.GetString("phone")
+            };
+            // Store computed total in a transient OrderLine for convenience
+            order.Lines.Add(new OrderLine
+            {
+                Quantity  = reader.GetInt32("total_parts"),
+                UnitPrice = reader.GetDecimal("total_amount")
+            });
+            orders.Add(order);
+        }
+        return orders;
+    }
+
     public List<Order> GetByCustomerId(int customerId)
     {
         var orders = new List<Order>();

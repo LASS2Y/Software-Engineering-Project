@@ -10,6 +10,10 @@ public interface IOrderRepository
 {
     Order? GetById(int id);
     List<Order> GetAll();
+    /// <summary>
+    /// Returns all orders joined with customer info and computed line totals.
+    /// </summary>
+    List<Order> GetAllWithDetails();
     List<Order> GetByCustomerId(int customerId);
     void Add(Order order);
     void Update(Order order);
