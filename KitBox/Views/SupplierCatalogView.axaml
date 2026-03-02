@@ -1,0 +1,218 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="KitBox.Views.SupplierCatalogView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:SupplierCatalogViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*" Background="#F5F7FA">
+
+        <!-- ═══════════════════ HEADER ═══════════════════ -->
+        <Border Background="#7C3AED" Padding="20,16" CornerRadius="0,0,20,20">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
+                </Button>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Supplier Catalog"
+                               FontSize="22" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalEntries, StringFormat='{}{0} catalog entries'}"
+                               Foreground="#DDD6FE" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        Background="White" Foreground="#7C3AED"
+                        CornerRadius="8" Padding="12,6" Margin="0,0,8,0"
+                        Command="{Binding ToggleAddFormCommand}"
+                        Content="＋  Add Entry"/>
+
+                <Button Grid.Column="3"
+                        Background="White" Foreground="#7C3AED"
+                        CornerRadius="8" Padding="12,6"
+                        Command="{Binding RefreshCommand}"
+                        Content="⟳  Refresh"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════ TOOLBAR: FILTER + STATUS ═══════════════════ -->
+        <StackPanel Grid.Row="1" Margin="24,12,24,0" Spacing="10">
+
+            <!-- Status message -->
+            <Border IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#EDE9FE" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#6D28D9"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <!-- Load error -->
+            <Border IsVisible="{Binding LoadError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#FEE2E2" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding LoadError}" Foreground="#DC2626"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <!-- Filter row -->
+            <Border Background="White" CornerRadius="12" Padding="14,10"
+                    BoxShadow="0 1 4 0 #10000000">
+                <Grid ColumnDefinitions="Auto,200,20,Auto,*,Auto">
+                    <TextBlock Text="Supplier:" VerticalAlignment="Center"
+                               FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,8,0"/>
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding Suppliers}"
+                              SelectedItem="{Binding SelectedSupplier}"
+                              PlaceholderText="All suppliers"
+                              Width="200" Height="34">
+                    </ComboBox>
+
+                    <TextBlock Grid.Column="3" Text="Search:" VerticalAlignment="Center"
+                               FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,8,0"/>
+                    <TextBox Grid.Column="4" Text="{Binding SearchText}"
+                             Watermark="part name, reference or type…"
+                             Height="34" Margin="0,0,8,0"/>
+                    <Button Grid.Column="5" Content="Clear"
+                            Command="{Binding ClearFilterCommand}"
+                            Height="34" Padding="12,0"
+                            Background="#E5E7EB" Foreground="#374151" CornerRadius="6"/>
+                </Grid>
+            </Border>
+
+            <!-- ══════ ADD FORM (collapsible) ══════ -->
+            <Border IsVisible="{Binding IsAddFormVisible}"
+                    Background="#F5F3FF" CornerRadius="12" Padding="16"
+                    BoxShadow="0 1 4 0 #10000000">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Add new catalog entry" FontWeight="Bold" FontSize="15"
+                               Foreground="#7C3AED"/>
+                    <Grid ColumnDefinitions="*,*,*,*,Auto" RowDefinitions="Auto,Auto">
+                        <StackPanel Spacing="4" Margin="0,0,8,0">
+                            <TextBlock Text="Supplier" FontSize="12" Foreground="#6B7280"/>
+                            <ComboBox ItemsSource="{Binding Suppliers}"
+                                      SelectedItem="{Binding NewSupplier}"
+                                      PlaceholderText="Select…"
+                                      Height="34" HorizontalAlignment="Stretch">
+
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="4" Margin="0,0,8,0">
+                            <TextBlock Text="Part ID" FontSize="12" Foreground="#6B7280"/>
+                            <NumericUpDown Value="{Binding NewPartId}" Minimum="1"
+                                           Height="34" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Spacing="4" Margin="0,0,8,0">
+                            <TextBlock Text="Price (€)" FontSize="12" Foreground="#6B7280"/>
+                            <NumericUpDown Value="{Binding NewPrice}" Minimum="0.01"
+                                           Increment="0.50" FormatString="F2"
+                                           Height="34" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Spacing="4" Margin="0,0,8,0">
+                            <TextBlock Text="Delivery (days)" FontSize="12" Foreground="#6B7280"/>
+                            <NumericUpDown Value="{Binding NewDeliveryDays}" Minimum="1"
+                                           Height="34" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                        <Button Grid.Column="4" Content="Add"
+                                Command="{Binding AddEntryCommand}"
+                                VerticalAlignment="Bottom"
+                                Height="34" Padding="18,0"
+                                Background="#7C3AED" Foreground="White" CornerRadius="8"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- ═══════════════════ TABLE ═══════════════════ -->
+        <ScrollViewer Grid.Row="2" Margin="24,12,24,16">
+            <Border Background="White" CornerRadius="14"
+                    BoxShadow="0 2 10 0 #12000000" Padding="20">
+                <StackPanel Spacing="6">
+
+                    <!-- Table header -->
+                    <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
+                        <Grid ColumnDefinitions="140,*,90,80,90,70,90,70,80,60">
+                            <TextBlock            Text="Supplier"  FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="1" Text="Part Name"  FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="2" Text="Reference"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="Type"       FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Price (€)"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Days"       FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="6" Text="New Price"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="7" Text="New Days"   FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="8" Text=""           FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="9" Text=""           FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Rows -->
+                    <ItemsControl ItemsSource="{Binding CatalogItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SupplierCatalogItemViewModel">
+                                <Border Padding="12,5" CornerRadius="6">
+                                    <Grid ColumnDefinitions="140,*,90,80,90,70,90,70,80,60">
+                                        <TextBlock Text="{Binding SupplierName}"
+                                                   FontWeight="Medium"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#7C3AED"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding PartName}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding PartReference}"
+                                                   FontSize="12" Foreground="#94A3B8"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding PartType}"
+                                                   FontSize="12" Foreground="#64748B"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4"
+                                                   Text="{Binding CurrentPrice, StringFormat='{}{0:F2}'}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5"
+                                                   Text="{Binding CurrentDelivery}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                        <NumericUpDown Grid.Column="6"
+                                                       Value="{Binding EditPrice}"
+                                                       Minimum="0.01" Increment="0.50"
+                                                       FormatString="F2"
+                                                       Width="80" Height="30"/>
+                                        <NumericUpDown Grid.Column="7"
+                                                       Value="{Binding EditDelivery}"
+                                                       Minimum="1"
+                                                       Width="60" Height="30"/>
+                                        <Button Grid.Column="8"
+                                                Content="💾 Save"
+                                                Command="{Binding SavePriceCommand}"
+                                                Height="30" Padding="8,0"
+                                                Background="#7C3AED" Foreground="White"
+                                                CornerRadius="6" FontSize="12"/>
+                                        <Button Grid.Column="9"
+                                                Content="🗑"
+                                                Command="{Binding DeleteEntryCommand}"
+                                                Height="30" Width="30"
+                                                Background="#FEE2E2" Foreground="#DC2626"
+                                                CornerRadius="6" FontSize="14"
+                                                HorizontalContentAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

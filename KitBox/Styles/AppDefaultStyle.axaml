@@ -38,7 +38,7 @@
         <Setter Property="CornerRadius" Value="40"/>
     </Style>
     
-    <Style Selector="Border.tendances">
+    <Style Selector="Border.trending">
         <Setter Property="BorderThickness" Value="0.5"></Setter>
         <Setter Property="BorderBrush" Value="Black"></Setter>
         <Setter Property="Width" Value="300"/>

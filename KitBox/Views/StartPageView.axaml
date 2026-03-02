@@ -52,20 +52,21 @@
                                        FontStyle="Italic"></TextBlock>
                         </StackPanel>
                     </Button>
-                
+
                     <Button Width="750"
                             Height="100"
-                            Background="#F5F7FA"
+                            Background="#7C3AED"
                             BorderThickness="0.5"
                             BorderBrush="Black"
-                            CornerRadius="50">
+                            CornerRadius="50"
+                            Command="{Binding GoToSecretaryMenuCommand}">
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
                             <Label Content=""
-                                   Foreground="Black"></Label>
-                            <TextBlock Text="Owner"
-                                       Foreground="Black"
+                                   Foreground="White"></Label>
+                            <TextBlock Text="Secretary"
+                                       Foreground="White"
                                        FontSize="36"
                                        FontWeight="DemiBold"
                                        FontStyle="Italic"></TextBlock>

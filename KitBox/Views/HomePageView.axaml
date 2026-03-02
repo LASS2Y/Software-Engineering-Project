@@ -24,7 +24,7 @@
                                FontWeight="Bold"
                                Foreground="White"/>
 
-                    <TextBlock Text="Commandez vos casiers préférés en quelques clics"
+                    <TextBlock Text="Order your favorite lockers in just a few clicks"
                                Foreground="#E0E7FF"
                                Margin="0,8,0,0"/>
                 </StackPanel>
@@ -47,56 +47,56 @@
             
         </Border>
 
-        <!-- Contenu principal -->
+        <!-- Main content -->
         <ScrollViewer Grid.Row="1">
             <Grid ColumnDefinitions="*,Auto,*">
                 <Grid Grid.Column="1" MaxWidth="1600">
                     <StackPanel Margin="24" Spacing="24">
 
-                        <!-- Boutons principaux -->
+                        <!-- Main action buttons -->
                         <Grid ColumnDefinitions="*,*,*"
                               ColumnSpacing="16">
 
                             <Button Classes="FirstTopic">
                                 <StackPanel>
-                                    <TextBlock Text="Commander"
+                                    <TextBlock Text="Order"
                                                FontSize="18"
                                                FontWeight="Bold"/>
-                                    <TextBlock Text="Voir le catalogue et passer commande"
+                                    <TextBlock Text="Browse the catalog and place an order"
                                                Margin="0,8,0,16"/>
-                                    <TextBlock Text="Accéder"
+                                    <TextBlock Text="Go"
                                             HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Button>
 
                             <Button Grid.Column="1" Classes="FirstTopic">
                                 <StackPanel>
-                                    <TextBlock Text="Mes commandes"
+                                    <TextBlock Text="My Orders"
                                                FontSize="18"
                                                FontWeight="Bold"/>
-                                    <TextBlock Text="Suivez vos commandes passées"
+                                    <TextBlock Text="Track your previous orders"
                                                Margin="0,8,0,16"/>
-                                    <TextBlock Text="Consulter"
+                                    <TextBlock Text="View"
                                             HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Button>
                             
                             <Button Grid.Column="2" Classes="FirstTopic">
                                 <StackPanel>
-                                    <TextBlock Text="Mes commandes"
+                                    <TextBlock Text="My Orders"
                                                FontSize="18"
                                                FontWeight="Bold"/>
-                                    <TextBlock Text="Suivez vos commandes passées"
+                                    <TextBlock Text="Track your previous orders"
                                                Margin="0,8,0,16"/>
-                                    <TextBlock Text="Consulter"
+                                    <TextBlock Text="View"
                                                HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Button>
                         </Grid>
 
-                        <!-- Section Tendaces -->
+                        <!-- Trending section -->
                         <StackPanel>
-                            <TextBlock Text="Tendances"
+                            <TextBlock Text="Trending"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Foreground="Black"
@@ -109,54 +109,54 @@
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
 
-                                <Border Classes="tendances">
+                                <Border Classes="trending">
                                     <StackPanel>
                                         <TextBlock Text="Locker 1"
                                                    FontWeight="Bold"
                                                    Foreground="Black"/>
-                                        <TextBlock Text="À partir de 120 €"
+                                        <TextBlock Text="From €120"
                                                    Foreground="Black"
                                                    Margin="0,4,0,8"/>
-                                        <Button Content="Commander"
+                                        <Button Content="Order"
                                                 Foreground="Black"/>
                                     </StackPanel>
                                 </Border>
 
-                                <Border Classes="tendances">
+                                <Border Classes="trending">
                                     <StackPanel>
                                         <TextBlock Text="Locker 2"
                                                    FontWeight="Bold"
                                                    Foreground="Black"/>
-                                        <TextBlock Text="À partir de 90 €"
+                                        <TextBlock Text="From €90"
                                                    Foreground="Black"
                                                    Margin="0,4,0,8"/>
-                                        <Button Content="Commander"
+                                        <Button Content="Order"
                                                 Foreground="Black"/>
                                     </StackPanel>
                                 </Border>
                                 
-                                <Border Classes="tendances">
+                                <Border Classes="trending">
                                     <StackPanel>
-                                        <TextBlock Text="Locker 2"
+                                        <TextBlock Text="Locker 3"
                                                    FontWeight="Bold"
                                                    Foreground="Black"/>
-                                        <TextBlock Text="À partir de 90 €"
+                                        <TextBlock Text="From €90"
                                                    Foreground="Black"
                                                    Margin="0,4,0,8"/>
-                                        <Button Content="Commander"
+                                        <Button Content="Order"
                                                 Foreground="Black"/>
                                     </StackPanel>
                                 </Border>
                                 
-                                <Border Classes="tendances">
+                                <Border Classes="trending">
                                     <StackPanel>
-                                        <TextBlock Text="Locker 2"
+                                        <TextBlock Text="Locker 4"
                                                    FontWeight="Bold"
                                                    Foreground="Black"/>
-                                        <TextBlock Text="À partir de 90 €"
+                                        <TextBlock Text="From €90"
                                                    Foreground="Black"
                                                    Margin="0,4,0,8"/>
-                                        <Button Content="Commander"
+                                        <Button Content="Order"
                                                 Foreground="Black"/>
                                     </StackPanel>
                                 </Border>

@@ -148,3 +148,6 @@ C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineerin
 C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\obj\Debug\net9.0\KitBox.pdb
 C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\obj\Debug\net9.0\KitBox.genruntimeconfig.cache
 C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\obj\Debug\net9.0\ref\KitBox.dll
+C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\HP PRO\Desktop\BAC 3 Q1 ECAM\projet génie logiciel\Software-Engineering-Project\KitBox\bin\Debug\net9.0\MySqlConnector.dll

@@ -1,0 +1,190 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="KitBox.Views.OrderSummaryView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:OrderSummaryViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,*,Auto" Background="#F5F7FA">
+
+        <!-- Header -->
+        <Border Background="#4F46E5" Padding="20,16" CornerRadius="0,0,20,20">
+            <Grid ColumnDefinitions="Auto,*">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
+                </Button>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Order Summary"
+                               FontSize="22" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding CustomerName, StringFormat='Customer: {0}'}"
+                               Foreground="#C7D2FE" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="24,16">
+            <StackPanel Spacing="16">
+
+                <!-- DB / load error -->
+                <Border IsVisible="{Binding LoadError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Background="#FEE2E2" CornerRadius="12" Padding="16">
+                    <TextBlock Text="{Binding LoadError}"
+                               Foreground="#DC2626"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Cabinet info -->
+                <Border Background="White" CornerRadius="14" Padding="20"
+                        BoxShadow="0 2 10 0 #12000000">
+                    <Grid ColumnDefinitions="*,*,*">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Lockers" FontSize="13" Foreground="#64748B"/>
+                            <TextBlock Text="{Binding LockerCount}"
+                                       FontSize="24" FontWeight="Bold" Foreground="#4F46E5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="4">
+                            <TextBlock Text="Angle Iron Length" FontSize="13" Foreground="#64748B"/>
+                            <TextBlock Text="{Binding AngleIronLength, StringFormat='{}{0:F1} cm'}"
+                                       FontSize="24" FontWeight="Bold" Foreground="#4F46E5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Spacing="4">
+                            <TextBlock Text="Angle Iron Color" FontSize="13" Foreground="#64748B"/>
+                            <TextBlock Text="{Binding AngleIronColor2}"
+                                       FontSize="24" FontWeight="Bold" Foreground="#4F46E5"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Parts table -->
+                <Border Background="White" CornerRadius="14" Padding="20"
+                        BoxShadow="0 2 10 0 #12000000">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Required Parts" FontSize="17" FontWeight="Bold"/>
+
+                        <!-- Table header -->
+                        <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
+                            <Grid ColumnDefinitions="*,80,80,80,80,100">
+                                <TextBlock Text="Part" FontWeight="SemiBold" FontSize="13"/>
+                                <TextBlock Grid.Column="1" Text="Ref" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="Need" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="Stock" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="Unit €" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="5" Text="Status" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Table rows -->
+                        <ItemsControl ItemsSource="{Binding Parts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:PartAvailabilityViewModel">
+                                    <Border Padding="12,8" CornerRadius="6">
+                                        <Grid ColumnDefinitions="*,80,80,80,80,100">
+                                            <TextBlock Text="{Binding PartName}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Reference}" FontSize="12"
+                                                       Foreground="#94A3B8" HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Required}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding InStock}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4"
+                                                       Text="{Binding UnitPrice, StringFormat='{}{0:F2}'}"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <Border Grid.Column="5"
+                                                    CornerRadius="12" Padding="8,4"
+                                                    HorizontalAlignment="Center"
+                                                    Background="{Binding StatusBackground}"
+                                                    VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding StockStatus}"
+                                                           FontSize="11"
+                                                           Foreground="{Binding StatusForeground}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Separator/>
+
+                        <!-- Total -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Text="Total Price" FontSize="16" FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TotalPrice, StringFormat='{}{0:F2} €'}"
+                                       FontSize="20" FontWeight="Bold" Foreground="#4F46E5"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Deposit field (shown only when not all parts available) -->
+                <Border Background="#FEF3C7" CornerRadius="14" Padding="20"
+                        BoxShadow="0 2 10 0 #12000000"
+                        IsVisible="{Binding !AllPartsAvailable}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="⚠ Some parts are not in stock."
+                                   FontWeight="SemiBold" Foreground="#92400E"/>
+                        <TextBlock Text="A deposit will be required. An estimated delivery date will be communicated."
+                                   Foreground="#92400E" TextWrapping="Wrap" FontSize="13"/>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Text="Deposit amount (€):"
+                                       VerticalAlignment="Center"
+                                       FontWeight="SemiBold" Margin="0,0,12,0"/>
+                            <NumericUpDown Grid.Column="1"
+                                          Value="{Binding DepositAmount}"
+                                          Minimum="0"
+                                          FormatString="F2"
+                                          Width="180"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Status message after order -->
+                <Border IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Background="#DCFCE7" CornerRadius="10" Padding="16">
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Foreground="#15803D"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="White" Padding="24,16"
+                BoxShadow="0 -2 12 0 #0F000000">
+            <Grid ColumnDefinitions="*,Auto,16,Auto">
+                <Button Grid.Column="1"
+                        Height="50" Width="200"
+                        Background="#6B7280"
+                        Foreground="White"
+                        CornerRadius="12"
+                        FontSize="15"
+                        Content="← New Order"
+                        Command="{Binding ReturnToStartCommand}"
+                        IsVisible="{Binding OrderPlaced}"/>
+                <Button Grid.Column="3"
+                        Height="50" Width="220"
+                        Background="#4F46E5"
+                        Foreground="White"
+                        CornerRadius="12"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Content="Confirm Order ✓"
+                        Command="{Binding PlaceOrderCommand}"
+                        IsEnabled="{Binding !OrderPlaced}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
