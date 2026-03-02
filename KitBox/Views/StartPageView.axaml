@@ -52,26 +52,6 @@
                                        FontStyle="Italic"></TextBlock>
                         </StackPanel>
                     </Button>
-                
-                    <Button Width="750"
-                            Height="100"
-                            Background="#F5F7FA"
-                            BorderThickness="0.5"
-                            BorderBrush="Black"
-                            CornerRadius="50"
-                            Command="{Binding GoToOwnerDashboardCommand}">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <Label Content=""
-                                   Foreground="Black"></Label>
-                            <TextBlock Text="Owner"
-                                       Foreground="Black"
-                                       FontSize="36"
-                                       FontWeight="DemiBold"
-                                       FontStyle="Italic"></TextBlock>
-                        </StackPanel>
-                    </Button>
 
                     <Button Width="750"
                             Height="100"
@@ -79,13 +59,13 @@
                             BorderThickness="0.5"
                             BorderBrush="Black"
                             CornerRadius="50"
-                            Command="{Binding GoToSupplierCatalogCommand}">
+                            Command="{Binding GoToSecretaryMenuCommand}">
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
                             <Label Content=""
                                    Foreground="White"></Label>
-                            <TextBlock Text="Secretary – Supplier Catalog"
+                            <TextBlock Text="Secretary"
                                        Foreground="White"
                                        FontSize="36"
                                        FontWeight="DemiBold"

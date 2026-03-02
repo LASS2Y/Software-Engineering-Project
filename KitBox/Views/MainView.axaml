@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="1600" Height="900"
+        WindowState="Maximized"
         x:Class="KitBox.Views.MainView"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"

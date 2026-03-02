@@ -20,6 +20,6 @@ public partial class StartPageViewModel : ViewModelBase
         => _main.GoToOwnerDashboard();
 
     [RelayCommand]
-    public void GoToSupplierCatalog()
-        => _main.GoToSupplierCatalog();
+    public void GoToSecretaryMenu()
+        => _main.GoToSecretaryMenu();
 }
