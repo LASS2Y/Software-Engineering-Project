@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zFzND+LYKfA=",
+  "dgSpecHash": "LGCO1FeQ3wo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\KitBox\\KitBox.csproj",
+  "projectFilePath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\projet génie logiciel\\Software-Engineering-Project\\Kitbox\\KitBox.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP PRO\\.nuget\\packages\\avalonia\\11.3.6\\avalonia.11.3.6.nupkg.sha512",
     "C:\\Users\\HP PRO\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.25547.20250602\\avalonia.angle.windows.natives.2.1.25547.20250602.nupkg.sha512",

@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KitBox.Models;
@@ -47,6 +48,23 @@ public partial class CustomerSelectionViewModel : ViewModelBase
         };
 
         _main.GoToCabinetConfiguration(customer);
+    }
+
+    [RelayCommand]
+    public void ContinueAsGuest()
+    {
+        // Generate a short unique token so the DB UNIQUE constraint on email is satisfied
+        var token = Guid.NewGuid().ToString("N")[..8].ToUpper();
+
+        var guest = new Customer
+        {
+            FirstName = "Guest",
+            LastName  = token,
+            Email     = $"guest-{token}@guest.kitbox",
+            Phone     = string.Empty
+        };
+
+        _main.GoToCabinetConfiguration(guest);
     }
 
     [RelayCommand]
