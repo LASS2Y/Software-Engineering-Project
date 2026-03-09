@@ -20,7 +20,7 @@ public partial class CabinetConfigurationViewModel : ViewModelBase
         _main     = main;
         _customer = customer;
 
-        AngleIronColors = new List<string>(_main.Services.CatalogService.GetAvailableColors());
+        AngleIronColors = new List<string>(_main.Services.CatalogService.GetAvailableAngleIronColors());
         _angleIronColor = AngleIronColors[0];
 
         // Start with one empty locker

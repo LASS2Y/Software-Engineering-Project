@@ -21,8 +21,14 @@ public interface ICatalogService
     /// <summary>Available locker depths in cm.</summary>
     IReadOnlyList<double> GetAvailableDepths();
 
-    /// <summary>Available colors for panels and angle irons.</summary>
+    /// <summary>Available colors for panels (locker body color).</summary>
     IReadOnlyList<string> GetAvailableColors();
+
+    /// <summary>Available colors for angle irons.</summary>
+    IReadOnlyList<string> GetAvailableAngleIronColors();
+
+    /// <summary>Available colors for doors (includes "Glass").</summary>
+    IReadOnlyList<string> GetAvailableDoorColors();
 
     /// <summary>Crossbar height constant in cm (always 2 cm, used in TotalHeight calc).</summary>
     double CrossbarHeight { get; }
