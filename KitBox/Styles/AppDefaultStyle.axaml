@@ -49,4 +49,8 @@
         <Setter Property="BoxShadow" Value="0 4 12 #20000000"/>
     </Style>
     
+    <Style Selector="Button.StartPageButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#303030"></Setter>
+    </Style>
+    
 </Styles>
