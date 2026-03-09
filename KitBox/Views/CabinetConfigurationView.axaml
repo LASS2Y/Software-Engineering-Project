@@ -93,7 +93,7 @@
                                     <StackPanel Grid.Column="5" Spacing="4"
                                                 IsVisible="{Binding HasDoors}">
                                         <TextBlock Text="Door Color" FontSize="12" Foreground="#64748B"/>
-                                        <ComboBox ItemsSource="{Binding AvailableColors}"
+                                        <ComboBox ItemsSource="{Binding AvailableDoorColors}"
                                                   SelectedItem="{Binding DoorColor}"
                                                   HorizontalAlignment="Stretch"/>
                                     </StackPanel>

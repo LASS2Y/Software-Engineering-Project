@@ -28,7 +28,8 @@ public partial class LockerConfigViewModel : ViewModelBase
         _width    = widths.Count  > 0 ? widths[0]  : 60;
         _depth    = depths.Count  > 0 ? depths[0]  : 40;
         _color    = colors.Count  > 0 ? colors[0]  : "White";
-        _doorColor = _color;
+        var doorColors = _catalog.GetAvailableDoorColors();
+        _doorColor = doorColors.Count > 0 ? doorColors[0] : _color;
     }
 
     [ObservableProperty] private double  _height;
@@ -44,6 +45,7 @@ public partial class LockerConfigViewModel : ViewModelBase
         => HasDoors ? _catalog.GetAvailableWidthsWithDoors() : _catalog.GetAvailableWidths();
     public IReadOnlyList<double> AvailableDepths  => _catalog.GetAvailableDepths();
     public IReadOnlyList<string> AvailableColors  => _catalog.GetAvailableColors();
+    public IReadOnlyList<string> AvailableDoorColors => _catalog.GetAvailableDoorColors();
 
     // Re-evaluate available widths when HasDoors changes
     partial void OnHasDoorsChanged(bool value)

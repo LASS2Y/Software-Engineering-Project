@@ -175,6 +175,17 @@ public class OrderService : IOrderService
     /// <summary>
     /// Builds the full list of required parts for the given lockers + angle irons.
     /// Returns tuples (partType, subType, quantity, h, w, d, color, isGlass?).
+    ///
+    /// Dimension mapping matches the real catalog (kitboxparts.csv):
+    ///   - Battens: height only, no color (universal)
+    ///   - Front/Back crossbars: width only, no color (universal)
+    ///   - Side crossbars: depth only, no color (universal)
+    ///   - Horizontal panels: width × depth, locker color
+    ///   - Side panels: height × depth, locker color
+    ///   - Back panels: height × width, locker color
+    ///   - Doors: height × width (= locker width), door color
+    ///   - Handles: no dimensions, no color (universal)
+    ///   - Angle irons: height = total length, angle iron color
     /// </summary>
     private List<(string partType, string? subType, int qty,
                   double h, double w, double d, string color, bool? isGlass)>
@@ -184,34 +195,37 @@ public class OrderService : IOrderService
 
         foreach (var l in lockers)
         {
-            // 4 battens
-            reqs.Add(("Batten", null, 4, l.Height, 0, 0, l.Color, null));
+            // 4 battens – matched by height only (no color in real catalog)
+            reqs.Add(("Batten", null, 4, l.Height, 0, 0, "", null));
 
-            // 2 front crossbars (2 grooves) – width of the locker
-            reqs.Add(("Crossbar", "Front", 2, 0, l.Width, 0, l.Color, null));
+            // 2 front crossbars (2 grooves) – matched by width = locker width (no color)
+            reqs.Add(("Crossbar", "Front", 2, 0, l.Width, 0, "", null));
 
-            // 2 back crossbars (1 groove) – width of the locker
-            reqs.Add(("Crossbar", "Back", 2, 0, l.Width, 0, l.Color, null));
+            // 2 back crossbars (1 groove) – matched by width = locker width (no color)
+            reqs.Add(("Crossbar", "Back", 2, 0, l.Width, 0, "", null));
 
-            // 4 side crossbars (1 groove) – depth of the locker
-            reqs.Add(("Crossbar", "Side", 4, 0, l.Depth, 0, l.Color, null));
+            // 4 side crossbars (1 groove) – matched by depth = locker depth (no color)
+            reqs.Add(("Crossbar", "Side", 4, 0, 0, l.Depth, "", null));
 
-            // 2 horizontal panels
+            // 2 horizontal panels – matched by width × depth, locker color
             reqs.Add(("Panel", "Horizontal", 2, 0, l.Width, l.Depth, l.Color, null));
 
-            // 2 side panels
+            // 2 side panels – matched by height × depth, locker color
             reqs.Add(("Panel", "Side", 2, l.Height, 0, l.Depth, l.Color, null));
 
-            // 1 back panel
+            // 1 back panel – matched by height × width, locker color
             reqs.Add(("Panel", "Back", 1, l.Height, l.Width, 0, l.Color, null));
 
             if (l.HasDoors)
             {
-                // 2 doors
-                reqs.Add(("Door", null, 2, l.Height, l.Width / 2, l.Depth, l.DoorColor!, false));
+                bool isGlass = string.Equals(l.DoorColor, "Glass", StringComparison.OrdinalIgnoreCase);
 
-                // 2 cup handles (not for glass doors)
-                reqs.Add(("Handle", null, 2, 0, 0, 0, l.DoorColor!, null));
+                // 2 doors – matched by height × width (width = locker width in catalog)
+                reqs.Add(("Door", null, 2, l.Height, l.Width, 0, l.DoorColor!, isGlass));
+
+                // 2 cup handles – only for non-glass doors (no color, no dimensions)
+                if (!isGlass)
+                    reqs.Add(("Handle", null, 2, 0, 0, 0, "", null));
             }
         }
 

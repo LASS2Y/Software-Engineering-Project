@@ -99,7 +99,7 @@ CREATE TABLE part (
     width           DOUBLE          NOT NULL,
     depth           DOUBLE          NOT NULL,
     color           VARCHAR(50)     NOT NULL,
-    unit_price      DECIMAL(10,2)   NOT NULL,
+    unit_price      DECIMAL(10,4)   NOT NULL,
     stock_quantity  INT             NOT NULL DEFAULT 0,
     minimum_stock   INT             NOT NULL DEFAULT 0,
 
@@ -125,7 +125,7 @@ CREATE TABLE order_line (
     order_id        INT             NOT NULL,
     part_id         INT             NOT NULL,
     quantity        INT             NOT NULL,
-    unit_price      DECIMAL(10,2)   NOT NULL COMMENT 'Price at time of order',
+    unit_price      DECIMAL(10,4)   NOT NULL COMMENT 'Price at time of order',
 
     FOREIGN KEY (order_id) REFERENCES customer_order(id) ON DELETE CASCADE,
     FOREIGN KEY (part_id)  REFERENCES part(id)
@@ -150,7 +150,7 @@ CREATE TABLE supplier_part (
     id              INT             AUTO_INCREMENT PRIMARY KEY,
     supplier_id     INT             NOT NULL,
     part_id         INT             NOT NULL,
-    price           DECIMAL(10,2)   NOT NULL,
+    price           DECIMAL(10,4)   NOT NULL,
     delivery_days   INT             NOT NULL,
 
     FOREIGN KEY (supplier_id) REFERENCES supplier(id) ON DELETE CASCADE,
