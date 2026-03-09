@@ -94,8 +94,13 @@
                         CornerRadius="12"
                         FontSize="16"
                         FontWeight="Bold"
-                        Content="Continue →"
-                        Command="{Binding ContinueCommand}"/>
+                        
+                        Command="{Binding ContinueCommand}"
+                        Classes="StartPageButton">
+                    <TextBlock Text="Continue →"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                </Button>
 
                 <!-- Separator -->
                 <Grid ColumnDefinitions="*,Auto,*" VerticalAlignment="Center">
@@ -118,7 +123,8 @@
                         CornerRadius="12"
                         FontSize="15"
                         Foreground="#475569"
-                        Command="{Binding ContinueAsGuestCommand}">
+                        Command="{Binding ContinueAsGuestCommand}"
+                        Classes="StartPageButton">
                     <StackPanel Orientation="Horizontal" Spacing="8"
                                 HorizontalAlignment="Center">
                         <TextBlock Text="👤" VerticalAlignment="Center"/>

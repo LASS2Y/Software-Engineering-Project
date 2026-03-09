@@ -38,7 +38,8 @@
                             BorderThickness="0.5"
                             BorderBrush="Black"
                             CornerRadius="50"
-                            Command="{Binding GoToHomePageCommand}">
+                            Command="{Binding GoToHomePageCommand}"
+                            Classes="StartPageButton">
                         
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
@@ -59,7 +60,8 @@
                             BorderThickness="0.5"
                             BorderBrush="Black"
                             CornerRadius="50"
-                            Command="{Binding GoToSecretaryMenuCommand}">
+                            Command="{Binding GoToSecretaryMenuCommand}"
+                            Classes="StartPageButton">
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
