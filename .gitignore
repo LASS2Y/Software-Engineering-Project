@@ -1,3 +1,7 @@
 .idea/
 Kitbox/.idea/
 *.iml
+bin/
+obj/
+.env
+
