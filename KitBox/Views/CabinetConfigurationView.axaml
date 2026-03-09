@@ -86,8 +86,6 @@
                                         <TextBlock Text="Doors?" FontSize="12" Foreground="#64748B"
                                                    HorizontalAlignment="Center"/>
                                         <CheckBox IsChecked="{Binding HasDoors}"
-                                                  BorderThickness="0.5"
-                                                  BorderBrush="Black"
                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
 
