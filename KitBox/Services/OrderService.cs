@@ -38,6 +38,8 @@ public class OrderService : IOrderService
     private readonly ICustomerRepository   _customerRepository;
     private readonly IPartRepository       _partRepository;
     private readonly IAngleIronCalculatorService _angleIronCalc;
+    private readonly ISupplierSelectionService _supplierSelectionService;
+    private readonly ISupplierOrderRepository _supplierOrderRepository;
 
     public OrderService(
         IOrderRepository        orderRepository,
@@ -47,7 +49,9 @@ public class OrderService : IOrderService
         IBillRepository         billRepository,
         ICustomerRepository     customerRepository,
         IPartRepository         partRepository,
-        IAngleIronCalculatorService angleIronCalc)
+        IAngleIronCalculatorService angleIronCalc,
+        ISupplierSelectionService supplierSelectionService,
+        ISupplierOrderRepository supplierOrderRepository)
     {
         _orderRepository     = orderRepository;
         _orderLineRepository = orderLineRepository;
@@ -57,6 +61,8 @@ public class OrderService : IOrderService
         _customerRepository  = customerRepository;
         _partRepository      = partRepository;
         _angleIronCalc       = angleIronCalc;
+        _supplierSelectionService = supplierSelectionService;
+        _supplierOrderRepository = supplierOrderRepository;
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -111,6 +117,7 @@ public class OrderService : IOrderService
                             string angleIronColor, decimal depositAmount)
     {
         var preview = PreviewOrder(lockers, angleIronColor);
+        DateTime? expectedAvailableDate = null;
 
         // Persist customer if new
         if (customer.Id == 0)
@@ -158,11 +165,47 @@ public class OrderService : IOrderService
             };
             _orderLineRepository.Add(line);
 
-            if (part.StockQuantity >= qty)
+            int stockUsed = Math.Min(part.StockQuantity, qty);
+            if (stockUsed > 0)
             {
-                int newStock = part.StockQuantity - qty;
+                int newStock = part.StockQuantity - stockUsed;
                 _partRepository.UpdateStock(part.Id, newStock);
+                part.StockQuantity = newStock;
             }
+
+            int missingQuantity = qty - stockUsed;
+            if (missingQuantity > 0)
+            {
+                var bestSupplier = _supplierSelectionService.GetBestSupplier(part.Id);
+                if (bestSupplier != null)
+                {
+                    var supplierOrder = new SupplierOrder
+                    {
+                        CustomerOrderId = order.Id,
+                        PartId = part.Id,
+                        SupplierId = bestSupplier.SupplierId,
+                        Quantity = missingQuantity,
+                        UnitCost = bestSupplier.Price,
+                        DeliveryDays = bestSupplier.DeliveryDays,
+                        OrderedAt = DateTime.Today,
+                        ExpectedDeliveryDate = DateTime.Today.AddDays(bestSupplier.DeliveryDays),
+                        Status = "Ordered"
+                    };
+
+                    _supplierOrderRepository.Add(supplierOrder);
+
+                    if (!expectedAvailableDate.HasValue || supplierOrder.ExpectedDeliveryDate > expectedAvailableDate.Value)
+                    {
+                        expectedAvailableDate = supplierOrder.ExpectedDeliveryDate;
+                    }
+                }
+            }
+        }
+
+        if (!preview.AllPartsAvailable)
+        {
+            order.AvailableDate = expectedAvailableDate ?? DateTime.Today.AddDays(14);
+            _orderRepository.Update(order);
         }
 
         return order;
