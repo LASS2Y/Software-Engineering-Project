@@ -55,7 +55,7 @@
 
                     <!-- Table header -->
                     <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
-                        <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230">
+                        <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230,130">
                             <TextBlock Text="Part Name" FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="1" Text="Type" FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="2" Text="Reference" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
@@ -65,7 +65,15 @@
                             <TextBlock Grid.Column="6" Text="New Quantity" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                             <TextBlock Grid.Column="7" Text="To Order" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                             <TextBlock Grid.Column="8" Text="Best Supplier" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="9" Text="Action" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                         </Grid>
+                    </Border>
+
+                    <Border IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Background="#DCFCE7" CornerRadius="10" Padding="10,8">
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="#166534"
+                                   TextWrapping="Wrap"/>
                     </Border>
 
                     <!-- Rows -->
@@ -74,7 +82,7 @@
                             <DataTemplate x:DataType="vm:StockItemViewModel">
                                 <Border Padding="12,6" CornerRadius="6"
                                         Background="{Binding RowBackground}">
-                                    <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230">
+                                    <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230,130">
                                         <TextBlock Text="{Binding Part.Name}" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="1" Text="{Binding PartType}"
                                                    Foreground="#64748B" FontSize="12"
@@ -122,6 +130,15 @@
                                                    VerticalAlignment="Center"
                                                    TextWrapping="Wrap"
                                                    MaxLines="2"/>
+                                        <Button Grid.Column="9"
+                                                Content="Order"
+                                                Height="32"
+                                                Padding="10,0"
+                                                CornerRadius="6"
+                                                Background="#0F766E"
+                                                Foreground="White"
+                                                IsEnabled="{Binding CanOrderFromSupplier}"
+                                                Command="{Binding OrderFromBestSupplierCommand}"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>

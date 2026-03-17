@@ -11,15 +11,18 @@ public class StockService : IStockService
     private readonly IPartRepository _partRepository;
     private readonly IOrderLineRepository _orderLineRepository;
     private readonly ISupplierSelectionService _supplierSelectionService;
+    private readonly ISupplierOrderRepository _supplierOrderRepository;
 
     public StockService(
         IPartRepository partRepository,
         IOrderLineRepository orderLineRepository,
-        ISupplierSelectionService supplierSelectionService)
+        ISupplierSelectionService supplierSelectionService,
+        ISupplierOrderRepository supplierOrderRepository)
     {
         _partRepository = partRepository;
         _orderLineRepository = orderLineRepository;
         _supplierSelectionService = supplierSelectionService;
+        _supplierOrderRepository = supplierOrderRepository;
     }
 
     public bool IsAvailable(int partId, int quantity)
@@ -124,5 +127,41 @@ public class StockService : IStockService
         }
 
         return suggestions;
+    }
+
+    public StockReplenishmentOrderResult PlaceReplenishmentOrder(int partId, int? quantity = null)
+    {
+        var part = _partRepository.GetById(partId)
+            ?? throw new InvalidOperationException($"Part id={partId} not found.");
+
+        int computedQuantity = quantity ?? Math.Max(0, part.MinimumStock - part.StockQuantity);
+        if (computedQuantity <= 0)
+            throw new InvalidOperationException("No replenishment required for this part.");
+
+        var supplier = _supplierSelectionService.GetBestSupplier(part.Id)
+            ?? throw new InvalidOperationException("No supplier available for this part.");
+
+        var supplierOrder = new Models.SupplierOrder
+        {
+            CustomerOrderId = null,
+            PartId = part.Id,
+            SupplierId = supplier.SupplierId,
+            Quantity = computedQuantity,
+            UnitCost = supplier.Price,
+            DeliveryDays = supplier.DeliveryDays,
+            OrderedAt = DateTime.Today,
+            ExpectedDeliveryDate = DateTime.Today.AddDays(supplier.DeliveryDays),
+            Status = "Ordered"
+        };
+
+        _supplierOrderRepository.Add(supplierOrder);
+
+        return new StockReplenishmentOrderResult(
+            supplierOrder.Id,
+            part.Id,
+            supplier.SupplierId,
+            computedQuantity,
+            supplier.Price,
+            supplier.DeliveryDays);
     }
 }
