@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using KitBox.Models;
 
 namespace KitBox.DataAccess.Interfaces;
@@ -9,6 +10,7 @@ namespace KitBox.DataAccess.Interfaces;
 public interface IOrderLineRepository
 {
     List<OrderLine> GetByOrderId(int orderId);
+    int GetSoldQuantityByPartSince(int partId, DateTime startDate);
     void Add(OrderLine orderLine);
     void Delete(int id);
 }

@@ -24,6 +24,19 @@ public partial class StockItemViewModel : ViewModelBase
     public string  StockBadge      => IsLow ? "⚠ Low" : "OK";
     public string  RowBackground    => IsLow ? "#FFF7F0" : "Transparent";
     public string  BadgeForeground  => IsLow ? "#DC2626" : "#16A34A";
+    public int RecommendedOrderQuantity => Math.Max(0, Part.MinimumStock - Part.StockQuantity);
+
+    public string BestSupplierSummary
+    {
+        get
+        {
+            var supplier = _main.Services.SupplierSelectionService.GetBestSupplier(Part.Id);
+            if (supplier == null)
+                return "No supplier";
+
+            return $"Supplier #{supplier.SupplierId} | €{supplier.Price:F2} | {supplier.DeliveryDays}d";
+        }
+    }
 
     [ObservableProperty] private int _newQuantity;
 
@@ -70,6 +83,8 @@ public partial class OwnerDashboardViewModel : ViewModelBase
         LoadError = string.Empty;
         try
         {
+            _main.Services.StockService.RefreshMinimumStockFromSalesHistory();
+
             StockItems.Clear();
             var parts = _main.Services.PartRepository.GetAll();
             foreach (var p in parts)

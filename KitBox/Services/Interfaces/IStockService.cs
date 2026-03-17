@@ -3,6 +3,18 @@ using KitBox.Models.Parts;
 
 namespace KitBox.Services.Interfaces;
 
+public record StockReplenishmentSuggestion(
+    int PartId,
+    string PartName,
+    string PartReference,
+    int CurrentStock,
+    int MinimumStock,
+    int QuantityToOrder,
+    int? SupplierId,
+    decimal? SupplierPrice,
+    int? DeliveryDays
+);
+
 /// <summary>
 /// Manages stock levels and checks part availability.
 /// </summary>
@@ -28,4 +40,30 @@ public interface IStockService
     /// Increments the stock for a part (e.g. after supplier delivery).
     /// </summary>
     void AddStock(int partId, int quantity);
+
+    /// <summary>
+    /// Computes a minimum stock based on sales history for one part.
+    /// </summary>
+    int CalculateMinimumStockFromSalesHistory(
+        int partId,
+        int historyDays = 90,
+        int coverageDays = 30,
+        int fallbackMinimum = 5);
+
+    /// <summary>
+    /// Recomputes and persists minimum stock for all parts using sales history.
+    /// </summary>
+    void RefreshMinimumStockFromSalesHistory(
+        int historyDays = 90,
+        int coverageDays = 30,
+        int fallbackMinimum = 5);
+
+    /// <summary>
+    /// Returns reorder suggestions for parts under dynamic minimum stock,
+    /// including the best supplier by price then delivery time.
+    /// </summary>
+    List<StockReplenishmentSuggestion> GetReplenishmentSuggestions(
+        int historyDays = 90,
+        int coverageDays = 30,
+        int fallbackMinimum = 5);
 }

@@ -54,7 +54,7 @@
 
                     <!-- Table header -->
                     <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
-                        <Grid ColumnDefinitions="*,100,80,80,80,100,120">
+                        <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230">
                             <TextBlock Text="Part Name" FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="1" Text="Type" FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="2" Text="Reference" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
@@ -62,6 +62,8 @@
                             <TextBlock Grid.Column="4" Text="Min." FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                             <TextBlock Grid.Column="5" Text="Status" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                             <TextBlock Grid.Column="6" Text="New Quantity" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="7" Text="To Order" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="8" Text="Best Supplier" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
 
@@ -71,7 +73,7 @@
                             <DataTemplate x:DataType="vm:StockItemViewModel">
                                 <Border Padding="12,6" CornerRadius="6"
                                         Background="{Binding RowBackground}">
-                                    <Grid ColumnDefinitions="*,100,80,80,80,100,120">
+                                    <Grid ColumnDefinitions="*,100,80,80,80,100,120,90,230">
                                         <TextBlock Text="{Binding Part.Name}" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="1" Text="{Binding PartType}"
                                                    Foreground="#64748B" FontSize="12"
@@ -109,6 +111,16 @@
                                                     CornerRadius="6"
                                                     Command="{Binding SaveStockCommand}"/>
                                         </StackPanel>
+                                        <TextBlock Grid.Column="7"
+                                                   Text="{Binding RecommendedOrderQuantity}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="8"
+                                                   Text="{Binding BestSupplierSummary}"
+                                                   VerticalAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   MaxLines="2"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>

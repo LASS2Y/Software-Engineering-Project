@@ -39,6 +39,23 @@ public class OrderLineRepository : IOrderLineRepository
         return lines;
     }
 
+    public int GetSoldQuantityByPartSince(int partId, DateTime startDate)
+    {
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"SELECT COALESCE(SUM(ol.quantity), 0)
+              FROM order_line ol
+              JOIN customer_order o ON o.id = ol.order_id
+              WHERE ol.part_id = @partId
+                AND o.order_date >= @startDate",
+            connection);
+        cmd.Parameters.AddWithValue("@partId", partId);
+        cmd.Parameters.AddWithValue("@startDate", startDate.Date);
+
+        var result = cmd.ExecuteScalar();
+        return Convert.ToInt32(result);
+    }
+
     public void Add(OrderLine orderLine)
     {
         using var connection = _db.GetConnection();

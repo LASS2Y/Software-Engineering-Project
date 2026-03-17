@@ -17,5 +17,6 @@ public interface IPartRepository
     void Add(Part part);
     void Update(Part part);
     void UpdateStock(int id, int quantity);
+    void UpdateMinimumStock(int id, int minimumStock);
     void Delete(int id);
 }

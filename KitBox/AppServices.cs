@@ -49,7 +49,10 @@ public class AppServices
         AngleIronCalculator     = new AngleIronCalculatorService(CatalogService);
         LockerValidationService = new LockerValidationService(CatalogService);
         SupplierSelectionService = new SupplierSelectionService(SupplierPartRepository);
-        StockService            = new StockService(PartRepository);
+        StockService            = new StockService(
+                        PartRepository,
+                        OrderLineRepository,
+                        SupplierSelectionService);
         OrderService            = new OrderService(
                                     OrderRepository, OrderLineRepository,
                                     CabinetRepository, LockerRepository,

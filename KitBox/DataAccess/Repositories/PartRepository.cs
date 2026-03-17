@@ -168,6 +168,17 @@ public class PartRepository : IPartRepository
         cmd.ExecuteNonQuery();
     }
 
+    public void UpdateMinimumStock(int id, int minimumStock)
+    {
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            "UPDATE part SET minimum_stock = @minimumStock WHERE id = @id",
+            connection);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@minimumStock", minimumStock);
+        cmd.ExecuteNonQuery();
+    }
+
     public void Delete(int id)
     {
         using var connection = _db.GetConnection();
