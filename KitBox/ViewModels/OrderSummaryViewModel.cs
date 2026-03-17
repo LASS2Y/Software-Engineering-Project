@@ -5,6 +5,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KitBox.Models;
+using KitBox.Services.Interfaces;
 
 namespace KitBox.ViewModels;
 
@@ -77,11 +78,31 @@ public partial class OrderSummaryViewModel : ViewModelBase
             var order = _main.Services.OrderService.PlaceOrder(
                 _customer, _lockers, _angleIronColor, DepositAmount ?? 0m);
 
+            string? documentPath = null;
+            if (!AllPartsAvailable && (DepositAmount ?? 0m) > 0m)
+            {
+                var request = new InvoiceExportRequest(
+                    DocumentType: "Deposit_Receipt",
+                    OrderId: order.Id,
+                    BillId: null,
+                    CustomerName: CustomerName,
+                    CustomerEmail: _customer.Email,
+                    IssuedAt: DateTime.Today,
+                    TotalAmount: TotalPrice,
+                    DepositAmount: DepositAmount ?? 0m,
+                    AmountPaid: DepositAmount ?? 0m,
+                    RemainingAmount: TotalPrice - (DepositAmount ?? 0m),
+                    Notes: "Deposit received for a partially available order."
+                );
+                documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
+            }
+
             OrderPlaced = true;
             StatusMessage = AllPartsAvailable
                 ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup."
                 : $"✓  Order #{order.Id} recorded. Deposit required: €{DepositAmount:F2}." +
-                  $"\nExpected availability: {DateTime.Today.AddDays(14):dd/MM/yyyy}.";
+                  $"\nExpected availability: {order.AvailableDate?.ToString("dd/MM/yyyy") ?? "N/A"}." +
+                  (documentPath == null ? string.Empty : $"\nTXT receipt downloaded: {documentPath}");
         }
         catch (Exception ex)
         {

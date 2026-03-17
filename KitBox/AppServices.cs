@@ -31,6 +31,7 @@ public class AppServices
     public ISupplierSelectionService    SupplierSelectionService { get; }
     public IStockService                StockService             { get; }
     public IOrderService                OrderService             { get; }
+    public IInvoiceExportService        InvoiceExportService     { get; }
 
     public AppServices(DatabaseConnection db)
     {
@@ -55,6 +56,7 @@ public class AppServices
                         PartRepository,
                         OrderLineRepository,
                         SupplierSelectionService);
+        InvoiceExportService    = new InvoiceExportService();
         OrderService            = new OrderService(
                                     OrderRepository, OrderLineRepository,
                                     CabinetRepository, LockerRepository,
