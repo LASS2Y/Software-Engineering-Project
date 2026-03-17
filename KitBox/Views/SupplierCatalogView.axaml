@@ -127,11 +127,16 @@
                             <NumericUpDown Value="{Binding NewDeliveryDays}" Minimum="1"
                                            Height="34" HorizontalAlignment="Stretch"/>
                         </StackPanel>
-                        <Button Grid.Column="4" Content="Add"
+                        <Button Grid.Column="4" 
                                 Command="{Binding AddEntryCommand}"
                                 VerticalAlignment="Bottom"
                                 Height="34" Padding="18,0"
-                                Background="#7C3AED" Foreground="White" CornerRadius="8"/>
+                                Background="#7C3AED" Foreground="White" CornerRadius="8"
+                                Classes="StartPageButton">
+                            <TextBlock Text="Add"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Button>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -145,7 +150,7 @@
 
                     <!-- Table header -->
                     <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
-                        <Grid ColumnDefinitions="140,*,90,80,90,70,130,120,80,60">
+                        <Grid ColumnDefinitions="140,*,90,80,90,70,140,140,80,60">
                             <TextBlock            Text="Supplier"  FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="1" Text="Part Name"  FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="2" Text="Reference"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
@@ -164,7 +169,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:SupplierCatalogItemViewModel">
                                 <Border Padding="12,5" CornerRadius="6">
-                                    <Grid ColumnDefinitions="140,*,90,80,90,70,130,120,80,60">
+                                    <Grid ColumnDefinitions="140,*,90,80,90,70,140,140,80,60">
                                         <TextBlock Text="{Binding SupplierName}"
                                                    FontWeight="Medium"
                                                    VerticalAlignment="Center"
@@ -194,11 +199,11 @@
                                                        Value="{Binding EditPrice}"
                                                        Minimum="0.01" Increment="0.50"
                                                        FormatString="F2"
-                                                       Width="110" Height="30"/>
+                                                       Width="140" Height="30"/>
                                         <NumericUpDown Grid.Column="7"
                                                        Value="{Binding EditDelivery}"
                                                        Minimum="1"
-                                                       Width="110" Height="30"/>
+                                                       Width="140" Height="30"/>
                                         <Button Grid.Column="8"
                                                 Command="{Binding SavePriceCommand}"
                                                 Height="30" Padding="8,0"

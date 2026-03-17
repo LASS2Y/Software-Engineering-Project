@@ -103,5 +103,5 @@ public partial class OwnerDashboardViewModel : ViewModelBase
 
     [RelayCommand]
     public void Back()
-        => _main.NavigateTo(new StartPageViewModel(_main));
+        => _main.NavigateTo(new SecretaryMenuViewModel(_main));
 }

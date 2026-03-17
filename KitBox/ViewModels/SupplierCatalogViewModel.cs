@@ -177,7 +177,8 @@ public partial class SupplierCatalogViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void Back() => Main.NavigateTo(new StartPageViewModel(Main));
+    public void Back()
+        => Main.NavigateTo(new SecretaryMenuViewModel(Main));
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 

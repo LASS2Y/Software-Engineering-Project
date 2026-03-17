@@ -70,4 +70,8 @@
         <Setter Property="Background" Value="Transparent"></Setter>
     </Style>
     
+    <Style Selector="NumericUpDown /template/ ButtonSpinner">
+        <Setter Property="Width" Value="120"/> 
+    </Style>
+    
 </Styles>
