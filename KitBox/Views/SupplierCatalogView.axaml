@@ -35,13 +35,15 @@
                         Background="White" Foreground="#7C3AED"
                         CornerRadius="8" Padding="12,6" Margin="0,0,8,0"
                         Command="{Binding ToggleAddFormCommand}"
-                        Content="＋  Add Entry"/>
+                        Content="＋  Add Entry"
+                        Classes="StartPageButton"/>
 
                 <Button Grid.Column="3"
                         Background="White" Foreground="#7C3AED"
                         CornerRadius="8" Padding="12,6"
                         Command="{Binding RefreshCommand}"
-                        Content="⟳  Refresh"/>
+                        Content="⟳  Refresh"
+                        Classes="StartPageButton"/>
             </Grid>
         </Border>
 
@@ -80,10 +82,15 @@
                     <TextBox Grid.Column="4" Text="{Binding SearchText}"
                              Watermark="part name, reference or type…"
                              Height="34" Margin="0,0,8,0"/>
-                    <Button Grid.Column="5" Content="Clear"
+                    <Button Grid.Column="5" 
                             Command="{Binding ClearFilterCommand}"
                             Height="34" Padding="12,0"
-                            Background="#E5E7EB" Foreground="#374151" CornerRadius="6"/>
+                            Background="#E5E7EB" Foreground="#374151" CornerRadius="6"
+                            Classes="StartPageButton">
+                        <TextBlock Text="Clear"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Button>
                 </Grid>
             </Border>
 
@@ -138,7 +145,7 @@
 
                     <!-- Table header -->
                     <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
-                        <Grid ColumnDefinitions="140,*,90,80,90,70,90,70,80,60">
+                        <Grid ColumnDefinitions="140,*,90,80,90,70,130,120,80,60">
                             <TextBlock            Text="Supplier"  FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="1" Text="Part Name"  FontWeight="SemiBold" FontSize="13"/>
                             <TextBlock Grid.Column="2" Text="Reference"  FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
@@ -157,7 +164,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vm:SupplierCatalogItemViewModel">
                                 <Border Padding="12,5" CornerRadius="6">
-                                    <Grid ColumnDefinitions="140,*,90,80,90,70,90,70,80,60">
+                                    <Grid ColumnDefinitions="140,*,90,80,90,70,130,120,80,60">
                                         <TextBlock Text="{Binding SupplierName}"
                                                    FontWeight="Medium"
                                                    VerticalAlignment="Center"
@@ -187,24 +194,33 @@
                                                        Value="{Binding EditPrice}"
                                                        Minimum="0.01" Increment="0.50"
                                                        FormatString="F2"
-                                                       Width="80" Height="30"/>
+                                                       Width="110" Height="30"/>
                                         <NumericUpDown Grid.Column="7"
                                                        Value="{Binding EditDelivery}"
                                                        Minimum="1"
-                                                       Width="60" Height="30"/>
+                                                       Width="110" Height="30"/>
                                         <Button Grid.Column="8"
-                                                Content="💾 Save"
                                                 Command="{Binding SavePriceCommand}"
                                                 Height="30" Padding="8,0"
                                                 Background="#7C3AED" Foreground="White"
-                                                CornerRadius="6" FontSize="12"/>
+                                                CornerRadius="6" FontSize="12"
+                                                Classes="StartPageButton">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center">
+                                                💾 Save
+                                            </TextBlock>
+                                        </Button>
                                         <Button Grid.Column="9"
-                                                Content="🗑"
                                                 Command="{Binding DeleteEntryCommand}"
                                                 Height="30" Width="30"
                                                 Background="#FEE2E2" Foreground="#DC2626"
                                                 CornerRadius="6" FontSize="14"
-                                                HorizontalContentAlignment="Center"/>
+                                                HorizontalContentAlignment="Center">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center">
+                                                🗑
+                                            </TextBlock>
+                                        </Button>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
