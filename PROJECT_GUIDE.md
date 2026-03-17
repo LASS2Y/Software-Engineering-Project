@@ -794,6 +794,9 @@ Pour une armoire avec 2 casiers (H30×L60×P40 blanc + H40×L60×P40 noir avec p
 - [x] Calcul de longueur des cornières
 - [x] Validation des dimensions depuis le catalogue
 - [x] Single Table Inheritance pour les pièces
+- Si stock suffisant: prélèvement du stock local.
+- Si stock insuffisant: prélèvement du disponible, puis commande automatique du manque au meilleur fournisseur.
+La date de disponibilité de la commande client est recalculée selon la date de livraison attendue la plus tardive des commandes fournisseurs créées.
 
 ---
 
@@ -807,7 +810,7 @@ Pour une armoire avec 2 casiers (H30×L60×P40 blanc + H40×L60×P40 noir avec p
 | **Haute** | Réapprovisionnement automatique | Le stock bas est détecté mais il n'y a pas de commande fournisseur automatique ni de suggestion de réapprovisionnement |
 | **Haute** | Gestion des retours et remboursements | Aucun processus de retour n'est implémenté |
 | **Moyenne** | Impression/export de facture | La facture est créée en base mais pas exportée (PDF, impression) |
-| **Moyenne** | Historique des ventes pour calcul du stock minimum | Le stock minimum est statique (seed) ; il devrait être calculé à partir de l'historique |
+| **Moyenne** | Historique des ventes pour calcul du stock minimum | Le stock minimum est statique (seed) ; il devrait être calculé à partir de l'historique -- > FAIT mais à tester !| 
 | **Moyenne** | Gestion des clients existants | Le formulaire client crée toujours un nouveau client ; pas de recherche/sélection d'un client existant |
 | **Moyenne** | Notification quand commande disponible | Pas de système de notification client (email, etc.) |
 | **Basse** | Étagères, tiroirs et autres éléments | L'architecture Part est extensible mais ces modèles ne sont pas encore créés |

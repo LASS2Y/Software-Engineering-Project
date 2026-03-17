@@ -7,6 +7,7 @@ USE kitbox;
 
 -- Drop tables in reverse dependency order
 DROP TABLE IF EXISTS order_line;
+DROP TABLE IF EXISTS supplier_order;
 DROP TABLE IF EXISTS supplier_part;
 DROP TABLE IF EXISTS locker;
 DROP TABLE IF EXISTS cabinet;
@@ -159,6 +160,26 @@ CREATE TABLE supplier_part (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================================
+-- SUPPLIER_ORDER (automatic purchase orders for missing stock)
+-- ============================================================
+CREATE TABLE supplier_order (
+    id                      INT             AUTO_INCREMENT PRIMARY KEY,
+    customer_order_id       INT             NOT NULL,
+    part_id                 INT             NOT NULL,
+    supplier_id             INT             NOT NULL,
+    quantity                INT             NOT NULL,
+    unit_cost               DECIMAL(10,4)   NOT NULL,
+    delivery_days           INT             NOT NULL,
+    ordered_at              DATE            NOT NULL,
+    expected_delivery_date  DATE            NOT NULL,
+    status                  VARCHAR(30)     NOT NULL DEFAULT 'Ordered',
+
+    FOREIGN KEY (customer_order_id) REFERENCES customer_order(id) ON DELETE CASCADE,
+    FOREIGN KEY (part_id)           REFERENCES part(id),
+    FOREIGN KEY (supplier_id)       REFERENCES supplier(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
 -- Performance indexes
 -- ============================================================
 CREATE INDEX idx_order_customer      ON customer_order(customer_id);
@@ -171,3 +192,5 @@ CREATE INDEX idx_part_type           ON part(part_type);
 CREATE INDEX idx_part_stock          ON part(stock_quantity, minimum_stock);
 CREATE INDEX idx_supplierpart_part   ON supplier_part(part_id);
 CREATE INDEX idx_supplierpart_price  ON supplier_part(price, delivery_days);
+CREATE INDEX idx_supplierorder_customer_order ON supplier_order(customer_order_id);
+CREATE INDEX idx_supplierorder_expected       ON supplier_order(expected_delivery_date);
