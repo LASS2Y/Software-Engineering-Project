@@ -17,7 +17,8 @@
         <Border Background="#4F46E5" Padding="20,16" CornerRadius="0,0,20,20">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Button Background="Transparent" BorderThickness="0"
-                        Command="{Binding BackCommand}">
+                        Command="{Binding BackCommand}"
+                        Classes="BackButton">
                     <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
                 </Button>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
@@ -86,8 +87,6 @@
                                         <TextBlock Text="Doors?" FontSize="12" Foreground="#64748B"
                                                    HorizontalAlignment="Center"/>
                                         <CheckBox IsChecked="{Binding HasDoors}"
-                                                  BorderThickness="0.5"
-                                                  BorderBrush="Black"
                                                   HorizontalAlignment="Center"/>
                                     </StackPanel>
 
@@ -153,8 +152,13 @@
                     CornerRadius="12"
                     FontSize="16"
                     FontWeight="Bold"
-                    Content="Preview Order →"
-                    Command="{Binding ProceedCommand}"/>
+                    Command="{Binding ProceedCommand}"
+                    Classes="StartPageButton">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    Preview Order →
+                </TextBlock>
+            </Button>
         </Border>
     </Grid>
 </UserControl>

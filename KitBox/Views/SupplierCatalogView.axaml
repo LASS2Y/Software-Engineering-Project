@@ -17,7 +17,8 @@
         <Border Background="#7C3AED" Padding="20,16" CornerRadius="0,0,20,20">
             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                 <Button Background="Transparent" BorderThickness="0"
-                        Command="{Binding BackCommand}">
+                        Command="{Binding BackCommand}"
+                        Classes="BackButton">
                     <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
                 </Button>
 

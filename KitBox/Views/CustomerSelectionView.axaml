@@ -17,7 +17,8 @@
         <Border Background="#4F46E5" Padding="24" CornerRadius="0,0,24,24">
             <Grid ColumnDefinitions="Auto,*">
                 <Button Background="Transparent" BorderThickness="0"
-                        Command="{Binding BackCommand}" VerticalAlignment="Center">
+                        Command="{Binding BackCommand}" VerticalAlignment="Center"
+                        Classes="BackButton">
                     <TextBlock Text="← Back" Foreground="White" FontSize="16"/>
                 </Button>
                 <TextBlock Grid.Column="1" Text="Customer Information"

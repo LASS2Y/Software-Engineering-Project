@@ -51,6 +51,23 @@
     
     <Style Selector="Button.StartPageButton:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="#303030"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+    
+    <Style Selector="Button.BackButton">
+        <Setter Property="RenderTransform" Value="scale(1)"></Setter>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.5"></BrushTransition>
+                <BrushTransition Property="Foreground" Duration="0:0:0.5"></BrushTransition>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.5"></TransformOperationsTransition>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button.BackButton:pointerover /template/ ContentPresenter">
+        <Setter Property="RenderTransform" Value="scale(1.15)"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
     </Style>
     
 </Styles>
