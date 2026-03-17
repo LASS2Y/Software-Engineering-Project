@@ -17,7 +17,8 @@
         <Border Background="#4F46E5" Padding="20,16" CornerRadius="0,0,20,20">
             <Grid ColumnDefinitions="Auto,*">
                 <Button Background="Transparent" BorderThickness="0"
-                        Command="{Binding BackCommand}">
+                        Command="{Binding BackCommand}"
+                        Classes="BackButton">
                     <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
                 </Button>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
@@ -171,9 +172,15 @@
                         Foreground="White"
                         CornerRadius="12"
                         FontSize="15"
-                        Content="← New Order"
                         Command="{Binding ReturnToStartCommand}"
-                        IsVisible="{Binding OrderPlaced}"/>
+                        IsVisible="{Binding OrderPlaced}"
+                        Classes="StartPageButton">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        ← New Order
+                    </TextBlock>
+                </Button>
+                
                 <Button Grid.Column="3"
                         Height="50" Width="220"
                         Background="#4F46E5"
@@ -181,9 +188,14 @@
                         CornerRadius="12"
                         FontSize="16"
                         FontWeight="Bold"
-                        Content="Confirm Order ✓"
                         Command="{Binding PlaceOrderCommand}"
-                        IsEnabled="{Binding !OrderPlaced}"/>
+                        IsEnabled="{Binding !OrderPlaced}"
+                        Classes="StartPageButton">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        Confirm Order ✓
+                    </TextBlock>
+                </Button>
             </Grid>
         </Border>
     </Grid>
