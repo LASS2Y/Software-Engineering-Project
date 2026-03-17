@@ -22,6 +22,7 @@ public class AppServices
     public IPartRepository          PartRepository       { get; }
     public ISupplierRepository      SupplierRepository   { get; }
     public ISupplierPartRepository  SupplierPartRepository { get; }
+    public ISupplierOrderRepository SupplierOrderRepository { get; }
 
     // ── Services ──────────────────────────────────────────────────────────────
     public ICatalogService              CatalogService           { get; }
@@ -43,6 +44,7 @@ public class AppServices
         PartRepository          = new PartRepository(db);
         SupplierRepository      = new SupplierRepository(db);
         SupplierPartRepository  = new SupplierPartRepository(db);
+        SupplierOrderRepository = new SupplierOrderRepository(db);
 
         // Services
         CatalogService          = new CatalogService();
@@ -57,6 +59,7 @@ public class AppServices
                                     OrderRepository, OrderLineRepository,
                                     CabinetRepository, LockerRepository,
                                     BillRepository, CustomerRepository,
-                                    PartRepository, AngleIronCalculator);
+                                    PartRepository, AngleIronCalculator,
+                                    SupplierSelectionService, SupplierOrderRepository);
     }
 }
