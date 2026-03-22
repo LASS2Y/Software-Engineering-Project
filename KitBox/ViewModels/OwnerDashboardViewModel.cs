@@ -10,10 +10,12 @@ namespace KitBox.ViewModels;
 public partial class StockItemViewModel : ViewModelBase
 {
     private readonly MainViewModel _main;
+    private readonly OwnerDashboardViewModel _parent;
 
-    public StockItemViewModel(Part part, MainViewModel main)
+    public StockItemViewModel(Part part, MainViewModel main, OwnerDashboardViewModel parent)
     {
         _main = main;
+        _parent = parent;
         Part  = part;
         _newQuantity = part.StockQuantity;
     }
@@ -25,6 +27,7 @@ public partial class StockItemViewModel : ViewModelBase
     public string  RowBackground    => IsLow ? "#FFF7F0" : "Transparent";
     public string  BadgeForeground  => IsLow ? "#DC2626" : "#16A34A";
     public int RecommendedOrderQuantity => Math.Max(0, Part.MinimumStock - Part.StockQuantity);
+    public bool CanOrderFromSupplier => RecommendedOrderQuantity > 0;
 
     public string BestSupplierSummary
     {
@@ -56,6 +59,23 @@ public partial class StockItemViewModel : ViewModelBase
             _ = ex;
         }
     }
+
+    [RelayCommand]
+    public void OrderFromBestSupplier()
+    {
+        try
+        {
+            var result = _main.Services.StockService.PlaceReplenishmentOrder(Part.Id, RecommendedOrderQuantity);
+            _parent.SetStatus(
+                $"Supplier order #{result.SupplierOrderId} placed for {Part.Name}: " +
+                $"qty {result.Quantity}, supplier #{result.SupplierId}, " +
+                $"EUR {result.UnitCost:F2}, ETA {result.DeliveryDays} day(s).");
+        }
+        catch (Exception ex)
+        {
+            _parent.SetStatus($"Error while ordering {Part.Name}: {ex.Message}");
+        }
+    }
 }
 
 /// <summary>
@@ -76,6 +96,7 @@ public partial class OwnerDashboardViewModel : ViewModelBase
 
     [ObservableProperty] private int    _lowStockCount;
     [ObservableProperty] private string _loadError = string.Empty;
+    [ObservableProperty] private string _statusMessage = string.Empty;
 
     [RelayCommand]
     public void Refresh()
@@ -88,7 +109,7 @@ public partial class OwnerDashboardViewModel : ViewModelBase
             StockItems.Clear();
             var parts = _main.Services.PartRepository.GetAll();
             foreach (var p in parts)
-                StockItems.Add(new StockItemViewModel(p, _main));
+                StockItems.Add(new StockItemViewModel(p, _main, this));
 
             LowStockCount = 0;
             foreach (var s in StockItems)
@@ -103,5 +124,12 @@ public partial class OwnerDashboardViewModel : ViewModelBase
 
     [RelayCommand]
     public void Back()
+<<<<<<< HEAD
         => _main.NavigateTo(new SecretaryMenuViewModel(_main));
+=======
+        => _main.NavigateTo(new StartPageViewModel(_main));
+
+    public void SetStatus(string message)
+        => StatusMessage = message;
+>>>>>>> facture_feature
 }

@@ -10,7 +10,7 @@ public class SupplierOrder
 {
     public int Id { get; set; }
 
-    public int CustomerOrderId { get; set; }
+    public int? CustomerOrderId { get; set; }
 
     public int PartId { get; set; }
 

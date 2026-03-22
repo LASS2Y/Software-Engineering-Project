@@ -15,6 +15,15 @@ public record StockReplenishmentSuggestion(
     int? DeliveryDays
 );
 
+public record StockReplenishmentOrderResult(
+    int SupplierOrderId,
+    int PartId,
+    int SupplierId,
+    int Quantity,
+    decimal UnitCost,
+    int DeliveryDays
+);
+
 /// <summary>
 /// Manages stock levels and checks part availability.
 /// </summary>
@@ -66,4 +75,10 @@ public interface IStockService
         int historyDays = 90,
         int coverageDays = 30,
         int fallbackMinimum = 5);
+
+    /// <summary>
+    /// Places a replenishment supplier order for a part.
+    /// If quantity is null, minimum quantity needed to reach minimum stock is used.
+    /// </summary>
+    StockReplenishmentOrderResult PlaceReplenishmentOrder(int partId, int? quantity = null);
 }

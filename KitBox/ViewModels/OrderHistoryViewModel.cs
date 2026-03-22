@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KitBox.Models;
 using KitBox.Models.Enums;
+using KitBox.Services.Interfaces;
 
 namespace KitBox.ViewModels;
 
@@ -106,8 +107,23 @@ public partial class OrderItemViewModel : ViewModelBase
             Order.BillId = bill.Id;
             _parent.Main.Services.OrderRepository.Update(Order);
 
+            var request = new InvoiceExportRequest(
+                DocumentType: "Final_Payment_Invoice",
+                OrderId: OrderId,
+                BillId: bill.Id,
+                CustomerName: CustomerName,
+                CustomerEmail: CustomerEmail,
+                IssuedAt: bill.EmissionDate,
+                TotalAmount: TotalAmount,
+                DepositAmount: Deposit ?? 0m,
+                AmountPaid: bill.Amount,
+                RemainingAmount: 0m,
+                Notes: "Final payment received. Balance is now fully settled."
+            );
+            string documentPath = _parent.Main.Services.InvoiceExportService.ExportTxt(request);
+
             RefreshProps();
-            _parent.SetStatus($"Bill #{bill.Id} generated for Order #{OrderId} — Amount: €{bill.Amount:F2}");
+            _parent.SetStatus($"Bill #{bill.Id} generated for Order #{OrderId} — Amount: €{bill.Amount:F2} | TXT downloaded: {documentPath}");
         }
         catch (Exception ex) { _parent.SetStatus($"Error: {ex.Message}"); }
     }

@@ -50,7 +50,9 @@ public class SupplierOrderRepository : ISupplierOrderRepository
                  @deliveryDays, @orderedAt, @expectedDeliveryDate, @status)",
             connection);
 
-        cmd.Parameters.AddWithValue("@customerOrderId", supplierOrder.CustomerOrderId);
+        cmd.Parameters.AddWithValue("@customerOrderId", supplierOrder.CustomerOrderId.HasValue
+            ? supplierOrder.CustomerOrderId.Value
+            : (object)DBNull.Value);
         cmd.Parameters.AddWithValue("@partId", supplierOrder.PartId);
         cmd.Parameters.AddWithValue("@supplierId", supplierOrder.SupplierId);
         cmd.Parameters.AddWithValue("@quantity", supplierOrder.Quantity);
@@ -70,7 +72,7 @@ public class SupplierOrderRepository : ISupplierOrderRepository
         using var cmd = new MySqlCommand(
             @"CREATE TABLE IF NOT EXISTS supplier_order (
                 id                      INT AUTO_INCREMENT PRIMARY KEY,
-                customer_order_id       INT NOT NULL,
+                customer_order_id       INT NULL,
                 part_id                 INT NOT NULL,
                 supplier_id             INT NOT NULL,
                 quantity                INT NOT NULL,
@@ -87,6 +89,12 @@ public class SupplierOrderRepository : ISupplierOrderRepository
               ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
             connection);
         cmd.ExecuteNonQuery();
+
+        // Migration safety: allow stock replenishment orders without a customer order link.
+        using var alterCmd = new MySqlCommand(
+            "ALTER TABLE supplier_order MODIFY customer_order_id INT NULL",
+            connection);
+        alterCmd.ExecuteNonQuery();
     }
 
     private static SupplierOrder Map(MySqlDataReader reader)
@@ -94,7 +102,9 @@ public class SupplierOrderRepository : ISupplierOrderRepository
         return new SupplierOrder
         {
             Id = reader.GetInt32("id"),
-            CustomerOrderId = reader.GetInt32("customer_order_id"),
+            CustomerOrderId = reader.IsDBNull(reader.GetOrdinal("customer_order_id"))
+                ? null
+                : reader.GetInt32("customer_order_id"),
             PartId = reader.GetInt32("part_id"),
             SupplierId = reader.GetInt32("supplier_id"),
             Quantity = reader.GetInt32("quantity"),
