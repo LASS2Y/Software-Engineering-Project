@@ -1,4 +1,4 @@
-﻿-- ============================================================
+-- ============================================================
 -- KitBox - Seed Data (REAL catalog from kitboxparts.csv)
 -- Run after schema.sql:
 --   mysql -u root -p kitbox < seed.sql
@@ -35,7 +35,7 @@ INSERT INTO supplier (id, name, contact_email, phone) VALUES
 --       DECIMAL(10,4) instead of DECIMAL(10,2) in schema
 -- ============================================================
 INSERT INTO part (id, reference, name, part_type, height, width, depth, color, unit_price, stock_quantity, minimum_stock, panel_type, crossbar_type, groove_count, standard_length, is_glass) VALUES
-    (1, 'ANG50WHCUT', 'Angle Iron 50cm White (to cut)', 'AngleIron', 50, 0, 0, 'White', 1.1, 84, 32, NULL, NULL, NULL, 50, NULL),
+    (1, 'ANG50WHCUT', 'Angle Iron 50cm White (to cut)', 'AngleIron', 50, 0, 0, 'White', 1.1, 0, 32, NULL, NULL, NULL, 50, NULL),
     (2, 'ANG50MACUT', 'Angle Iron 50cm Marron (to cut)', 'AngleIron', 50, 0, 0, 'Marron', 0.88, 86, 32, NULL, NULL, NULL, 50, NULL),
     (3, 'ANG50GACUT', 'Angle Iron 50cm Galva (to cut)', 'AngleIron', 50, 0, 0, 'Galva', 1.1, 82, 32, NULL, NULL, NULL, 50, NULL),
     (4, 'ANG50BLCUT', 'Angle Iron 50cm Black (to cut)', 'AngleIron', 50, 0, 0, 'Black', 0.77, 82, 32, NULL, NULL, NULL, 50, NULL),

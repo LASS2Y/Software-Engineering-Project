@@ -164,7 +164,7 @@ CREATE TABLE supplier_part (
 -- ============================================================
 CREATE TABLE supplier_order (
     id                      INT             AUTO_INCREMENT PRIMARY KEY,
-    customer_order_id       INT             NOT NULL,
+    customer_order_id       INT             NULL,
     part_id                 INT             NOT NULL,
     supplier_id             INT             NOT NULL,
     quantity                INT             NOT NULL,
