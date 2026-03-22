@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using System;
-
+using Avalonia.WebView.Desktop;
 namespace KitBox;
 
 sealed class Program
@@ -17,5 +17,6 @@ sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
+            .UseDesktopWebView();
 }
