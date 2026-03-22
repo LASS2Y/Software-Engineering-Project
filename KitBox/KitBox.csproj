@@ -9,21 +9,25 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Assets\Web\textures\" />
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
+        <None Include="Assets\Web\index.html" CopyToOutputDirectory="Always" />
+        <None Include="Assets\Web\textures\*.jpg" CopyToOutputDirectory="Always" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.6" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.6" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.6" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.6" />
-        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.6">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
         <PackageReference Include="MySqlConnector" Version="2.4.0" />
+        <PackageReference Include="WebView.Avalonia" Version="11.0.0.1" />
+        <PackageReference Include="WebView.Avalonia.Desktop" Version="11.0.0.1" />
     </ItemGroup>
 </Project>
