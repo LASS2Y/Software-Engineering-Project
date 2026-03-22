@@ -41,6 +41,11 @@ public partial class StockItemViewModel : ViewModelBase
         }
     }
 
+    public void SetStatus(string message)
+    {
+        StatusMessage = message;
+    }
+
     [ObservableProperty] private int _newQuantity;
 
     [RelayCommand]
@@ -124,12 +129,5 @@ public partial class OwnerDashboardViewModel : ViewModelBase
 
     [RelayCommand]
     public void Back()
-<<<<<<< HEAD
         => _main.NavigateTo(new SecretaryMenuViewModel(_main));
-=======
-        => _main.NavigateTo(new StartPageViewModel(_main));
-
-    public void SetStatus(string message)
-        => StatusMessage = message;
->>>>>>> facture_feature
 }
