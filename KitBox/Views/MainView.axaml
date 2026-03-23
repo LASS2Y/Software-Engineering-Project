@@ -9,7 +9,7 @@
         RequestedThemeVariant="Light"
         x:Class="KitBox.Views.MainView"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/kitbox.ico"
         Title="KitBox">
 
     <Design.DataContext>
