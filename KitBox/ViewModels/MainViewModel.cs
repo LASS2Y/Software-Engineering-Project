@@ -42,6 +42,9 @@ public partial class MainViewModel : ObservableObject
     public void GoToSupplierCatalog()
         => NavigateTo(new SupplierCatalogViewModel(this));
 
+    public void GoToSupplierOrderTracking()
+        => NavigateTo(new SupplierOrderTrackingViewModel(this));
+
     public void GoToOrderHistory()
         => NavigateTo(new OrderHistoryViewModel(this));
 

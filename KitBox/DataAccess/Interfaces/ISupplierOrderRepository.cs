@@ -8,6 +8,9 @@ namespace KitBox.DataAccess.Interfaces;
 /// </summary>
 public interface ISupplierOrderRepository
 {
+    SupplierOrder? GetById(int id);
+    List<SupplierOrder> GetAll();
     List<SupplierOrder> GetByCustomerOrderId(int customerOrderId);
+    void UpdateStatus(int id, string status);
     void Add(SupplierOrder supplierOrder);
 }
