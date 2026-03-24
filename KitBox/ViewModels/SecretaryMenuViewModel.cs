@@ -28,6 +28,10 @@ public partial class SecretaryMenuViewModel : ViewModelBase
         => _main.GoToOrderHistory();
 
     [RelayCommand]
+    public void GoToSupplierOrdersTracking()
+        => _main.GoToSupplierOrderTracking();
+
+    [RelayCommand]
     public void Back()
         => _main.NavigateTo(new StartPageViewModel(_main));
 }

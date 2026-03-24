@@ -16,6 +16,46 @@ public class SupplierOrderRepository : ISupplierOrderRepository
         EnsureTable();
     }
 
+    public SupplierOrder? GetById(int id)
+    {
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"SELECT id, customer_order_id, part_id, supplier_id, quantity, unit_cost,
+                     delivery_days, ordered_at, expected_delivery_date, status
+              FROM supplier_order
+              WHERE id = @id",
+            connection);
+        cmd.Parameters.AddWithValue("@id", id);
+
+        using var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            return Map(reader);
+        }
+
+        return null;
+    }
+
+    public List<SupplierOrder> GetAll()
+    {
+        var orders = new List<SupplierOrder>();
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"SELECT id, customer_order_id, part_id, supplier_id, quantity, unit_cost,
+                     delivery_days, ordered_at, expected_delivery_date, status
+              FROM supplier_order
+              ORDER BY ordered_at DESC, id DESC",
+            connection);
+
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            orders.Add(Map(reader));
+        }
+
+        return orders;
+    }
+
     public List<SupplierOrder> GetByCustomerOrderId(int customerOrderId)
     {
         var orders = new List<SupplierOrder>();
@@ -64,6 +104,19 @@ public class SupplierOrderRepository : ISupplierOrderRepository
 
         cmd.ExecuteNonQuery();
         supplierOrder.Id = (int)cmd.LastInsertedId;
+    }
+
+    public void UpdateStatus(int id, string status)
+    {
+        using var connection = _db.GetConnection();
+        using var cmd = new MySqlCommand(
+            @"UPDATE supplier_order
+              SET status = @status
+              WHERE id = @id",
+            connection);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@status", status);
+        cmd.ExecuteNonQuery();
     }
 
     private void EnsureTable()

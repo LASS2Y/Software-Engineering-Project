@@ -29,6 +29,7 @@ public class AppServices
     public ILockerValidationService     LockerValidationService  { get; }
     public IAngleIronCalculatorService  AngleIronCalculator      { get; }
     public ISupplierSelectionService    SupplierSelectionService { get; }
+    public ISupplierOrderTrackingService SupplierOrderTrackingService { get; }
     public IStockService                StockService             { get; }
     public IOrderService                OrderService             { get; }
     public IInvoiceExportService        InvoiceExportService     { get; }
@@ -52,6 +53,10 @@ public class AppServices
         AngleIronCalculator     = new AngleIronCalculatorService(CatalogService);
         LockerValidationService = new LockerValidationService(CatalogService);
         SupplierSelectionService = new SupplierSelectionService(SupplierPartRepository);
+        SupplierOrderTrackingService = new SupplierOrderTrackingService(
+                        SupplierOrderRepository,
+                        PartRepository,
+                        OrderRepository);
         StockService            = new StockService(
                         PartRepository,
                         OrderLineRepository,
