@@ -92,7 +92,8 @@ public partial class OrderSummaryViewModel : ViewModelBase
                     DepositAmount: DepositAmount ?? 0m,
                     AmountPaid: DepositAmount ?? 0m,
                     RemainingAmount: TotalPrice - (DepositAmount ?? 0m),
-                    Notes: "Deposit received for a partially available order."
+                    Notes: "Deposit received for a partially available order. Remaining balance is due at pickup.",
+                    EstimatedAvailableDate: order.AvailableDate
                 );
                 documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
             }
