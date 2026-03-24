@@ -45,6 +45,8 @@ public class InvoiceExportService : IInvoiceExportService
         sb.AppendLine($"Deposit amount: EUR {request.DepositAmount:F2}");
         sb.AppendLine($"Paid amount: EUR {request.AmountPaid:F2}");
         sb.AppendLine($"Remaining amount: EUR {request.RemainingAmount:F2}");
+        if (request.EstimatedAvailableDate.HasValue)
+            sb.AppendLine($"Estimated availability date: {request.EstimatedAvailableDate.Value:dd/MM/yyyy}");
         sb.AppendLine();
         sb.AppendLine("Notes");
         sb.AppendLine(request.Notes);
