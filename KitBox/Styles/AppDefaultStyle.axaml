@@ -74,4 +74,13 @@
         <Setter Property="Width" Value="120"/> 
     </Style>
     
+    <Style Selector="Button.MainButton:pointerover">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+    
+    <Style Selector="Button.MainButton:pressed">
+        <Setter Property="Background" Value="White"/>
+    </Style>
+    
 </Styles>

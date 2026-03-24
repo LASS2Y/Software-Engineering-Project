@@ -1,0 +1,61 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="KitBox.Views.WelcomePageView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:WelcomePageViewModel">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"></StyleInclude>
+    </UserControl.Styles>
+    
+    <Grid RowDefinitions="*,50" Background="White">
+            
+            <Grid RowDefinitions="*,Auto"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <TextBlock Text="KitBox"
+                           FontSize="160"
+                           FontStyle="Italic"
+                           FontWeight="Bold"
+                           Foreground="#4F46E5"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 0 120"
+                           Padding="0 0 30 0"/>
+                
+                <Grid Grid.Row="1"
+                    HorizontalAlignment="Center">
+                    
+                    <Button  Content="Click to continue"
+                                Background="#4F46E5"
+                                FontSize="18"
+                                Width="200"
+                                Height="50"
+                                CornerRadius="20"
+                                Foreground="White"
+                                HorizontalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                Classes="StartPageButton"
+                                Command="{Binding ContinueAsGuestCommand}"/>
+                </Grid>
+            </Grid>
+        
+        <Grid Grid.Row="1" ColumnDefinitions="*,50">
+            <Button Grid.Column="1"
+                    Foreground="#4F46E5"
+                    Background="Transparent"
+                    Width="50"
+                    Height="50"
+                    Classes="StartPageButton"
+                    Command="{Binding GoToSecretaryMenuCommand}">
+                <Label Content="&#xE4D6;"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            </Button>
+        </Grid>
+        
+    </Grid>
+</UserControl>
