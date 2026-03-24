@@ -142,7 +142,8 @@
                                                 Foreground="White"
                                                 HorizontalAlignment="Center"
                                                 IsEnabled="{Binding CanOrderFromSupplier}"
-                                                Command="{Binding OrderFromBestSupplierCommand}"/>
+                                                Command="{Binding OrderFromBestSupplierCommand}"
+                                                Classes="StartPageButton"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
