@@ -110,5 +110,5 @@ public partial class CabinetConfigurationViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void Back() => _main.GoToCustomerSelection();
+    public void Back() => _main.GoToWelcomePage();
 }

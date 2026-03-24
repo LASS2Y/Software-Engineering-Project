@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using KitBox.DataAccess;
+using KitBox.Views;
 
 namespace KitBox.ViewModels;
 
@@ -54,4 +55,7 @@ public partial class MainViewModel : ObservableObject
                                   System.Collections.Generic.List<Models.Locker> lockers,
                                   string angleIronColor)
         => NavigateTo(new OrderSummaryViewModel(this, customer, lockers, angleIronColor));
+
+    public void GoToWelcomePage()
+        => NavigateTo(new WelcomePageViewModel(this));
 }
