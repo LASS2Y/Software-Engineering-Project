@@ -97,10 +97,29 @@ public partial class OrderSummaryViewModel : ViewModelBase
                 );
                 documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
             }
+            else if (AllPartsAvailable)
+            {
+                var request = new InvoiceExportRequest(
+                    DocumentType: "Immediate_Payment_Invoice",
+                    OrderId: order.Id,
+                    BillId: null,
+                    CustomerName: CustomerName,
+                    CustomerEmail: _customer.Email,
+                    IssuedAt: DateTime.Today,
+                    TotalAmount: TotalPrice,
+                    DepositAmount: 0m,
+                    AmountPaid: TotalPrice,
+                    RemainingAmount: 0m,
+                    Notes: "Order fully available at creation. Full amount paid.",
+                    EstimatedAvailableDate: order.AvailableDate
+                );
+                documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
+            }
 
             OrderPlaced = true;
             StatusMessage = AllPartsAvailable
-                ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup."
+                ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup." +
+                  (documentPath == null ? string.Empty : $"\nTXT invoice downloaded: {documentPath}")
                 : $"✓  Order #{order.Id} recorded. Deposit required: €{DepositAmount:F2}." +
                   $"\nExpected availability: {order.AvailableDate?.ToString("dd/MM/yyyy") ?? "N/A"}." +
                   (documentPath == null ? string.Empty : $"\nTXT receipt downloaded: {documentPath}");
