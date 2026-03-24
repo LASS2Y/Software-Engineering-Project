@@ -141,24 +141,28 @@
                                                     FontSize="11" Height="28" Padding="6,0"
                                                     Background="#D1FAE5" Foreground="#065F46"
                                                     CornerRadius="6"
+                                                    VerticalContentAlignment="Center"
                                                     Command="{Binding MarkAvailableCommand}"
                                                     IsVisible="{Binding CanMarkAvailable}"/>
                                             <Button Content="📦 Delivered"
                                                     FontSize="11" Height="28" Padding="6,0"
                                                     Background="#DBEAFE" Foreground="#1E40AF"
                                                     CornerRadius="6"
+                                                    VerticalContentAlignment="Center"
                                                     Command="{Binding MarkDeliveredCommand}"
                                                     IsVisible="{Binding CanMarkDelivered}"/>
                                             <Button Content="🧾 Bill"
                                                     FontSize="11" Height="28" Padding="6,0"
                                                     Background="#FEF9C3" Foreground="#854D0E"
                                                     CornerRadius="6"
+                                                    VerticalContentAlignment="Center"
                                                     Command="{Binding GenerateBillCommand}"
                                                     IsVisible="{Binding CanGenerateBill}"/>
                                             <Button Content="✕ Cancel"
                                                     FontSize="11" Height="28" Padding="6,0"
                                                     Background="#FEE2E2" Foreground="#DC2626"
                                                     CornerRadius="6"
+                                                    VerticalContentAlignment="Center"
                                                     Command="{Binding CancelOrderCommand}"
                                                     IsVisible="{Binding CanCancel}"/>
                                         </StackPanel>
