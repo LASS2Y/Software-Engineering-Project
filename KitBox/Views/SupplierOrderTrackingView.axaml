@@ -1,0 +1,156 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+             x:Class="KitBox.Views.SupplierOrderTrackingView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:SupplierOrderTrackingViewModel">
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*" Background="#F5F7FA">
+
+        <Border Background="#BE123C" Padding="20,16" CornerRadius="0,0,20,20">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Background="Transparent" BorderThickness="0"
+                        Command="{Binding BackCommand}"
+                        Classes="BackButton">
+                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
+                </Button>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Supplier Orders Tracking"
+                               FontSize="22" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding OpenOrders, StringFormat='{}{0} open order(s)'}"
+                               Foreground="#FFE4E6" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        Background="White" Foreground="#BE123C"
+                        CornerRadius="8" Padding="12,6"
+                        Command="{Binding RefreshCommand}"
+                        Content="⟳  Refresh"
+                        Classes="StartPageButton"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Margin="24,12,24,0" Spacing="10">
+            <Border IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#FFE4E6" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#9F1239"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <Border IsVisible="{Binding LoadError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Background="#FEE2E2" CornerRadius="10" Padding="14,8">
+                <TextBlock Text="{Binding LoadError}" Foreground="#DC2626"
+                           TextWrapping="Wrap" FontSize="13"/>
+            </Border>
+
+            <Border Background="White" CornerRadius="12" Padding="14,10"
+                    BoxShadow="0 1 4 0 #10000000">
+                <Grid ColumnDefinitions="Auto,200,20,Auto,80,20,Auto,80,20,Auto,80">
+                    <TextBlock Text="Filter:" VerticalAlignment="Center"
+                               FontWeight="SemiBold" Foreground="#4B5563" Margin="0,0,8,0"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding FilterOptions}"
+                              SelectedItem="{Binding SelectedFilter}"
+                              Width="200" Height="34"/>
+
+                    <TextBlock Grid.Column="3" Text="Total:" VerticalAlignment="Center" Foreground="#6B7280"/>
+                    <TextBlock Grid.Column="4" Text="{Binding TotalOrders}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Column="6" Text="Open:" VerticalAlignment="Center" Foreground="#6B7280"/>
+                    <TextBlock Grid.Column="7" Text="{Binding OpenOrders}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Column="9" Text="Received:" VerticalAlignment="Center" Foreground="#6B7280"/>
+                    <TextBlock Grid.Column="10" Text="{Binding ReceivedOrders}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2" Margin="24,12,24,16">
+            <Border Background="White" CornerRadius="14"
+                    BoxShadow="0 2 10 0 #12000000" Padding="20">
+                <StackPanel Spacing="6">
+                    <Border Background="#F1F5F9" CornerRadius="8" Padding="12,8">
+                        <Grid ColumnDefinitions="70,*,160,90,90,90,120,95,Auto">
+                            <TextBlock Text="#" FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="1" Text="Part" FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="2" Text="Supplier" FontWeight="SemiBold" FontSize="13"/>
+                            <TextBlock Grid.Column="3" Text="Qty" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Unit Cost" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Ordered" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="6" Text="ETA" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="7" Text="Status" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="8" Text="Actions" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl ItemsSource="{Binding Orders}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SupplierOrderItemViewModel">
+                                <Border Padding="12,6" CornerRadius="6" Margin="0,2">
+                                    <Grid ColumnDefinitions="70,*,160,90,90,90,120,95,Auto" RowDefinitions="Auto,Auto">
+                                        <TextBlock Text="{Binding SupplierOrderId}" FontWeight="SemiBold"
+                                                   Foreground="#BE123C" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding PartLabel}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding SupplierLabel}"
+                                                   VerticalAlignment="Center" Foreground="#334155"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding Quantity}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding UnitCost}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="{Binding OrderedAt}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6" Text="{Binding EtaDate}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                        <Border Grid.Column="7" CornerRadius="10" Padding="8,4"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Background="{Binding StatusBackground}">
+                                            <TextBlock Text="{Binding StatusText}"
+                                                       FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{Binding StatusColor}"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="8" Orientation="Horizontal" Spacing="4"
+                                                    VerticalAlignment="Center">
+                                            <Button Content="Transit"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#DBEAFE" Foreground="#1E40AF"
+                                                    CornerRadius="6"
+                                                    Command="{Binding MarkInTransitCommand}"
+                                                    IsVisible="{Binding CanMarkInTransit}"/>
+                                            <Button Content="Receive"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#DCFCE7" Foreground="#166534"
+                                                    CornerRadius="6"
+                                                    Command="{Binding MarkReceivedCommand}"
+                                                    IsVisible="{Binding CanMarkReceived}"/>
+                                            <Button Content="Cancel"
+                                                    FontSize="11" Height="28" Padding="6,0"
+                                                    Background="#FEE2E2" Foreground="#B91C1C"
+                                                    CornerRadius="6"
+                                                    Command="{Binding CancelOrderCommand}"
+                                                    IsVisible="{Binding CanCancel}"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="8"
+                                                   Text="{Binding CustomerOrderInfo}"
+                                                   FontSize="11" Foreground="#64748B"
+                                                   Margin="0,2,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
