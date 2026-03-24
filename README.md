@@ -245,19 +245,19 @@ Statut : Implémenté.
 Cette section met en évidence les lacunes restantes avec une forte priorité sur le risque métier.
 7.1 Lacunes métier critiques
 
-    Pas de flux de réception fournisseur
+    Pas de flux de réception fournisseur --> DONE
 
         Les commandes fournisseurs sont créées, mais il n'y a pas de processus de réception formel (pas d'interface de transition de statut, pas d'incrémentation automatique du stock, pas de recalcul pour passer les commandes clients en attente à Available).
 
-    Pas de module de transaction de paiement
+    Pas de module de transaction de paiement --> Pas important
 
         Les montants sont enregistrés, mais aucune opération de paiement réelle n'existe (historique d'audit, numérotation des reçus, etc.).
 
-    Pas de transaction de commande sécurisée (Rollback)
+    Pas de transaction de commande sécurisée (Rollback) --> Pas vitale
 
         PlaceOrder effectue plusieurs écritures sans frontières de transaction DB. Un échec partiel peut laisser des données incohérentes.
 
-    L'annulation ne restaure pas le stock
+    L'annulation ne restaure pas le stock --> Important
 
         Annuler une commande ne met à jour que le statut, sans logique de compensation pour les stocks déduits ou réservés.
 
@@ -267,7 +267,7 @@ Cette section met en évidence les lacunes restantes avec une forte priorité su
 
     Pas de système de notification : Le client n'est pas prévenu automatiquement quand sa commande est disponible.
 
-    Visibilité limitée des commandes fournisseurs : Pas d'écran dédié pour lister/filtrer et suivre les livraisons attendues.
+    Visibilité limitée des commandes fournisseurs : Pas d'écran dédié pour lister/filtrer et suivre les livraisons attendues. --> DONE
 
     Pas de consolidation des achats : Le réapprovisionnement se fait par ligne ; pas de groupement par fournisseur pour optimiser les commandes.
 
