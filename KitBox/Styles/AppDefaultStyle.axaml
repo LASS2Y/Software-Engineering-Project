@@ -83,4 +83,14 @@
         <Setter Property="Background" Value="White"/>
     </Style>
     
+    <Style Selector="Button.StartPageButtonAdmin /template/ ContentPresenter">
+        <Setter Property="FontFamily" Value="{DynamicResource PhosphorFill}"></Setter>
+        <Setter Property="FontSize" Value="26"></Setter>
+    </Style>
+    
+    <Style Selector="Button.StartPageButtonAdmin:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#303030"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+    
 </Styles>

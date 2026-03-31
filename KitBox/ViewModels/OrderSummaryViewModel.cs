@@ -116,5 +116,5 @@ public partial class OrderSummaryViewModel : ViewModelBase
 
     [RelayCommand]
     public void ReturnToStart()
-        => _main.NavigateTo(new StartPageViewModel(_main));
+        => _main.NavigateTo(new WelcomePageViewModel(_main));
 }
