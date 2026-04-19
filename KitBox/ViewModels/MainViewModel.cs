@@ -37,7 +37,7 @@ public partial class MainViewModel : ObservableObject
         => NavigateTo(new OwnerDashboardViewModel(this));
 
     public void GoToSecretaryMenu()
-        => NavigateTo(new SecretaryMenuViewModel(this));
+        => NavigateTo(new NewSecretaryMenuViewModel(this));
 
     public void GoToSupplierCatalog()
         => NavigateTo(new SupplierCatalogViewModel(this));
