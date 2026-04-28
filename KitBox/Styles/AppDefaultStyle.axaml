@@ -83,4 +83,45 @@
         <Setter Property="Background" Value="White"/>
     </Style>
     
+    <Style Selector="Button.StartPageButtonAdmin /template/ ContentPresenter">
+        <Setter Property="FontFamily" Value="{DynamicResource PhosphorFill}"></Setter>
+        <Setter Property="FontSize" Value="26"></Setter>
+    </Style>
+    
+    <Style Selector="Button.StartPageButtonAdmin:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#303030"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+    
+    <Style Selector="Label.akko">
+        <Setter Property="FontFamily" Value="{DynamicResource AkkoPro}"></Setter>
+        
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+    </Style>
+    
+    <Style Selector=" Button.NavButton:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#4F46E5"></Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+    
+    <Style Selector="Label.iconMenu">
+        <Setter Property="FontFamily" Value="{DynamicResource PhosphorFill}"></Setter>
+        <Setter Property="FontSize" Value="26"></Setter>
+        <Setter Property="Padding" Value="0 2.5 -0.4 3"></Setter>
+        <Setter Property="Margin" Value="0 0 5 0"></Setter>
+    </Style>
+    
+    
+    <Style Selector="Button.NavButton">
+        <Setter Property="Background" Value="Transparent"></Setter>
+    </Style>
+    
+    <Style Selector="Button.NavButton /template/ ContentPresenter">
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+    </Style>
+    
+    <Style Selector="Button.active /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundGradient}"></Setter>
+    </Style>
+    
 </Styles>

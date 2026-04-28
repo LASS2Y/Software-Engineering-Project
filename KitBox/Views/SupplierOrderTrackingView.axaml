@@ -13,25 +13,20 @@
 
     <Grid RowDefinitions="Auto,Auto,*" Background="#F5F7FA">
 
-        <Border Background="#BE123C" Padding="20,16" CornerRadius="0,0,20,20">
+        <Border Background="#F5F7FA" Padding="20,16" CornerRadius="0,0,20,20">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                <Button Background="Transparent" BorderThickness="0"
-                        Command="{Binding BackCommand}"
-                        Classes="BackButton">
-                    <TextBlock Text="← Back" Foreground="White" FontSize="15"/>
-                </Button>
-
-                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left">
                     <TextBlock Text="Supplier Orders Tracking"
-                               FontSize="22" FontWeight="Bold" Foreground="White"
-                               HorizontalAlignment="Center"/>
+                               FontSize="22" FontWeight="Bold" Foreground="Black"
+                               HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding OpenOrders, StringFormat='{}{0} open order(s)'}"
-                               Foreground="#FFE4E6" FontSize="13"
-                               HorizontalAlignment="Center"/>
+                               Foreground="#505050" FontSize="13"
+                               HorizontalAlignment="Left"/>
                 </StackPanel>
 
                 <Button Grid.Column="2"
-                        Background="White" Foreground="#BE123C"
+                        Background="#4F46E5" Foreground="White"
                         CornerRadius="8" Padding="12,6"
                         Command="{Binding RefreshCommand}"
                         Content="⟳  Refresh"
