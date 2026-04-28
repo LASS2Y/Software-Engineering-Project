@@ -45,4 +45,5 @@ public class DatabaseConnection
         connection.Open();
         return connection;
     }
+    public MySqlConnection CreateConnection() => new(_connectionString);
 }

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KitBox.DataAccess;
 using KitBox.Models;
 using KitBox.Models.Enums;
 using KitBox.Services.Interfaces;
@@ -195,6 +196,7 @@ public partial class OrderItemViewModel : ViewModelBase
 public partial class OrderHistoryViewModel : ViewModelBase
 {
     public MainViewModel Main { get; }
+    
 
     public OrderHistoryViewModel(MainViewModel main)
     {

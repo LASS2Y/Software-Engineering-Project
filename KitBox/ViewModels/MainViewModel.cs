@@ -8,7 +8,7 @@ public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
     private ViewModelBase _currentPage = null!;
-
+    
     public AppServices Services { get; }
 
     public MainViewModel()
@@ -22,7 +22,7 @@ public partial class MainViewModel : ObservableObject
             port:     int.Parse(EnvConfig.Get("DB_PORT", "3306")));
 
         Services = new AppServices(db);
-        CurrentPage = new WelcomePageViewModel(this);
+        CurrentPage = new DashBoardViewModel(this);
     }
 
     // ── Navigation helpers called by child ViewModels ────────────────────────────
@@ -61,4 +61,6 @@ public partial class MainViewModel : ObservableObject
 
     public void GoToWelcomePage()
         => NavigateTo(new WelcomePageViewModel(this));
+    public void GoToEmployeeInscription()
+        => NavigateTo(new EmployeeInscriptionViewModel(this));
 }
