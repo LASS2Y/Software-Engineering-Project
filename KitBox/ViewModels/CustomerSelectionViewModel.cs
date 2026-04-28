@@ -82,7 +82,7 @@ public partial class CustomerSelectionViewModel : ViewModelBase
            // Garde le Password : 
            string A = Password;
            // Ici, tu peux naviguer vers la page principale
-           _main.NavigateTo(new SecretaryMenuViewModel(_main));
+           _main.NavigateTo(new NewSecretaryMenuViewModel(_main));
            // await Navigation.NavigateToAsync<HomePageViewModel>();
 
            if (RememberMe = true)

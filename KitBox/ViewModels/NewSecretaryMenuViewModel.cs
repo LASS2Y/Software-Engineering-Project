@@ -17,6 +17,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(SupplierCatalogPageIsActive))]
     [NotifyPropertyChangedFor(nameof(OrderHistoryPageIsActive))]
     [NotifyPropertyChangedFor(nameof(SupplierOrderTrackingPageIsActive))]
+    [NotifyPropertyChangedFor(nameof(DashBoardPageIsActive))]
     
     private ViewModelBase? _currentMenuPage;
     
@@ -24,12 +25,15 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     public bool SupplierCatalogPageIsActive => CurrentMenuPage == _supplierCatalogPage;
     public bool OrderHistoryPageIsActive => CurrentMenuPage == _orderHistoryPage;
     public bool SupplierOrderTrackingPageIsActive => CurrentMenuPage == _supplierOrderTrackingPage;
+
+    public bool DashBoardPageIsActive => CurrentMenuPage == _dashBoardPage;
     
     
     private readonly OwnerDashboardViewModel _ownerDashboardPage ;
     private readonly SupplierCatalogViewModel  _supplierCatalogPage;
     private readonly OrderHistoryViewModel _orderHistoryPage;
     private readonly SupplierOrderTrackingViewModel _supplierOrderTrackingPage;
+    private readonly DashBoardViewModel _dashBoardPage;
     
 
     public NewSecretaryMenuViewModel(MainViewModel main)
@@ -39,6 +43,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
         _supplierCatalogPage = new SupplierCatalogViewModel(_main);
         _orderHistoryPage = new OrderHistoryViewModel(_main);
         _supplierOrderTrackingPage = new SupplierOrderTrackingViewModel(_main);
+        _dashBoardPage = new DashBoardViewModel(_main);
         CurrentMenuPage = _orderHistoryPage;
     }
     
@@ -70,6 +75,12 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     private void GoToSupplierOrderTracking()
     {
         CurrentMenuPage = _supplierOrderTrackingPage;
+    }
+
+    [RelayCommand]
+    private void GoToDashBoard()
+    {
+        CurrentMenuPage = _dashBoardPage;
     }
 
     [RelayCommand]

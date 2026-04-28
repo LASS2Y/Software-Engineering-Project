@@ -49,7 +49,7 @@
                     Background="Transparent"
                     Width="50"
                     Height="50"
-                    Classes="StartPageButton"
+                    Classes="StartPageButtonAdmin"
                     Command="{Binding GoToConnexionMenuCommand}">
                 <Label Content="&#xE4D6;"
                        HorizontalAlignment="Center"
