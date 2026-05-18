@@ -8,7 +8,7 @@ public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
     private ViewModelBase _currentPage = null!;
-
+    
     public AppServices Services { get; }
 
     public MainViewModel()
@@ -32,6 +32,9 @@ public partial class MainViewModel : ObservableObject
 
     public void GoToCustomerSelection()
         => NavigateTo(new CustomerSelectionViewModel(this));
+
+    public void GoToDashboard()
+        => NavigateTo(new DashBoardViewModel(this));
 
     public void GoToOwnerDashboard()
         => NavigateTo(new OwnerDashboardViewModel(this));
@@ -61,4 +64,6 @@ public partial class MainViewModel : ObservableObject
 
     public void GoToWelcomePage()
         => NavigateTo(new WelcomePageViewModel(this));
+    public void GoToEmployeeInscription()
+        => NavigateTo(new EmployeeInscriptionViewModel(this));
 }

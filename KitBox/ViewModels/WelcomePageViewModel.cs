@@ -33,4 +33,8 @@ public partial class WelcomePageViewModel : ViewModelBase
     [RelayCommand]
     public void GoToSecretaryMenu()
         => _main.GoToSecretaryMenu();
+
+    [RelayCommand]
+    public void GoToConnexionMenu()
+        => _main.GoToCustomerSelection();
 }
