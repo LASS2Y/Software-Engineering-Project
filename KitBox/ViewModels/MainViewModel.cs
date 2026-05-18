@@ -33,6 +33,9 @@ public partial class MainViewModel : ObservableObject
     public void GoToCustomerSelection()
         => NavigateTo(new CustomerSelectionViewModel(this));
 
+    public void GoToDashboard()
+        => NavigateTo(new DashBoardViewModel(this));
+
     public void GoToOwnerDashboard()
         => NavigateTo(new OwnerDashboardViewModel(this));
 

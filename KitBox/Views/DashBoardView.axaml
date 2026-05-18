@@ -12,114 +12,199 @@
         <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
     </UserControl.Styles>
     
-       <Grid Background="#F8FAFC" RowDefinitions="Auto,*" 
-             RowSpacing="24">
-        
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#6366F1" Height="80" CornerRadius="16" Margin="0,0,0,24">
-            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
-                <StackPanel Grid.Column="0" Margin="32,0">
-                    <TextBlock Text="📊 Application Metrics" FontSize="28" FontWeight="Bold" Foreground="White"/>
-                    <ComboBox Grid.Column="1" SelectedIndex="{Binding TimeRange}" Margin="0,8,0,0" Width="120">
-                        <ComboBoxItem Content="Day"/>
-                        <ComboBoxItem Content="Week"/>
-                        <ComboBoxItem Content="Month"/>
-                    </ComboBox>
+     <Grid Background="#F8FAFC"
+          RowDefinitions="Auto,Auto,*"
+          RowSpacing="24"
+          Margin="16">
+
+        <!-- Titre principal -->
+        <TextBlock Grid.Row="0"
+                   Text="Dashboard KitBox"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Margin="0,0,0,16" />
+
+        <!-- KPIs principaux (6 cartes) -->
+        <UniformGrid Grid.Row="1"
+                     Columns="3"
+                     Rows="2"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     RowSpacing="12"
+                     ColumnSpacing="12">
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Nbr de pièces en rupture"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
                 </StackPanel>
-                <Button Grid.Column="1" Content="🔄 Refresh" Command="{Binding }" 
-                        Background="Transparent" Foreground="White"/>
-            </Grid>
-        </Border>
+            </Border>
 
-        <!-- Main Grid 2x2 -->
-        <Grid Grid.Row="1" ColumnDefinitions="2*,*" RowDefinitions="1,1" ColumnSpacing="24" RowSpacing="24">
-            
-            <!-- Metrics Cards (Colonne 1) -->
-            <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="16">
-                
-                <!-- Total Users -->
-                <Border Grid.Row="0" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Chiffre d'affaires (CA)"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Total de pièces commandées"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Matériau le plus utilisé"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Nombre de commandes"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Taux de commandes avec acompte"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+        </UniformGrid>
+
+        <!-- Zone de graphiques (scroll horizontal) -->
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Margin="0">
+
+            <Grid ColumnDefinitions="*,*,*,*,*,*"
+                  ColumnSpacing="16">
+
+                <!-- Graph 1 : Évolution du nombre de commandes -->
+                <Border Grid.Column="0" Classes="card">
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Total Users" FontSize="14" Foreground="#64748B"/>
-                        <TextBlock Text="{Binding TotalUsers}" FontSize="36" FontWeight="Bold" Foreground="#0F172A"/>
-                        <TextBlock Text="{Binding TotalUsersTrend}" FontSize="14" Foreground="#10B981"/>
+                        <TextBlock Text="Évolution du nombre de commandes"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- Exemple de PlotView -->
+                            <!-- <oxy:PlotView DataContext="{Binding CommandePlotModel}" 
+                                           Height="240"/> -->
+                        </Border>
                     </StackPanel>
                 </Border>
 
-                <!-- New Users -->
-                <Border Grid.Row="1" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
+                <!-- Graph 2 : Répartition des commandes par type de casier -->
+                <Border Grid.Column="1" Classes="card">
                     <StackPanel Spacing="8">
-                        <TextBlock Text="New Users" FontSize="14" Foreground="#64748B"/>
-                        <TextBlock Text="{Binding NewUsers}" FontSize="36" FontWeight="Bold"/>
-                       <!-- <ProgressBar Value="{Binding NewUsersTrend}" Maximum="100" Height="8" Background="#E2E8F0" Foreground="#3B82F6"/> -->
+                        <TextBlock Text="Répartition des casiers par type"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding CasierPiePlotModel}"
+                                           Height="240"/> -->
+                        </Border>
                     </StackPanel>
                 </Border>
 
-                <!-- Bounce Sessions -->
-                <Border Grid.Row="2" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
+                <!-- Graph 3 : Stock de pièces critiques -->
+                <Border Grid.Column="2" Classes="card">
                     <StackPanel Spacing="8">
-                        <TextBlock Text="Bounce Sessions" FontSize="14" Foreground="#64748B"/>
-                        <TextBlock Text="{Binding BounceRate }"/>
+                        <TextBlock Text="Stock des pièces critiques"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding StockPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
                     </StackPanel>
                 </Border>
 
-                <!-- Graphiques -->
-                <Border Grid.Row="3" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
-                    <StackPanel Spacing="16">
-                        <TextBlock Text="📈 User Behavior Analysis" FontSize="18" FontWeight="Bold"/>
-                        
-                        <Canvas Width="400" Height="200" Background="#F1F5F9" >
-                            <!--Graphique ligne (simulé) -->
-                            <Rectangle Width="400" Height="2" Fill="#E2E8F0" Canvas.Top="100"/>
-                            <Rectangle Width="20" Height="80" Fill="#3B82F6" Canvas.Left="50" Canvas.Top="20"/>
-                            <Rectangle Width="20" Height="120" Fill="#3B82F6" Canvas.Left="150" Canvas.Top="-20"/>
-                            <Rectangle Width="20" Height="100" Fill="#3B82F6" Canvas.Left="250" Canvas.Top="0"/>
-                        </Canvas>
-                         
+                <!-- Graph 4 : Revenus par mois -->
+                <Border Grid.Column="3" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Revenus par mois (€)"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding RevenusMensuelsPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
                     </StackPanel>
                 </Border>
+
+                <!-- Graph 5 : Taux de compatibilité des armoires -->
+                <Border Grid.Column="4" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Taux de conformité des commandes"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding ConformitePlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 6 : Fournisseurs par type de pièce -->
+                <Border Grid.Column="5" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Pièces par fournisseur"
+                                   FontWeight="Bold"
+                                   />
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding FournisseursPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
             </Grid>
 
-            <!-- Droite : Activity + App Downloads -->
-            <Grid Grid.Column="1" RowDefinitions="1,1" RowSpacing="24">
-                
-                <!-- Activity MAU -->
-                <Border Grid.Row="0" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
-                    <StackPanel Spacing="16">
-                        <TextBlock Text="👥 Activity MAU" FontSize="18" FontWeight="Bold"/>
-                                               
-                         <Canvas Width="300" Height="200" Background="#F1F5F9" >
-                            <!-- Barres -->
-                            <Rectangle Width="40" Height="120" Fill="#10B981" Canvas.Left="20" Canvas.Top="80"/>
-                            <Rectangle Width="40" Height="160" Fill="#10B981" Canvas.Left="80" Canvas.Top="40"/>
-                            <Rectangle Width="40" Height="140" Fill="#10B981" Canvas.Left="140" Canvas.Top="60"/>
-                            <Rectangle Width="40" Height="180" Fill="#10B981" Canvas.Left="200" Canvas.Top="20"/>
-                        </Canvas>
-                        
-                        <TextBlock Text="📱 App Downloads" FontSize="18" FontWeight="Bold"/>
-                        <Canvas Width="300" Height="200" Background="#F1F5F9">
-                            <!--Graphique circulaire simulé-->
-                            <Ellipse Width="120" Height="120" Fill="#F59E0B" Canvas.Left="90" Canvas.Top="40"/>
-                            <Ellipse Width="80" Height="80" Fill="White" Canvas.Left="110" Canvas.Top="60"/>
-                            <TextBlock Text="55%" FontSize="24" FontWeight="Bold" 
-                                       Canvas.Left="140" Canvas.Top="85" Foreground="#F59E0B"/>
-                            <TextBlock Text="App Store 55% | Google Play 45%" FontSize="12" 
-                                       Canvas.Left="110" Canvas.Top="150" Foreground="#64748B"/>
-                        </Canvas>
-                    </StackPanel>
-                    
-                </Border>
+        </ScrollViewer>
 
-                <!-- App Downloads -->
-                <Border Grid.Row="1" Background="White" CornerRadius="16" Padding="24" BoxShadow="0 4 12 0 #1A000000">
-                    <StackPanel Spacing="16">
-                        <TextBlock Text="📱 App Downloads" FontSize="18" FontWeight="Bold"/>
-                        
-                       
-                        
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Grid>
     </Grid>
 </UserControl>
