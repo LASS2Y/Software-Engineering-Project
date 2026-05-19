@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS locker;
 DROP TABLE IF EXISTS cabinet;
 DROP TABLE IF EXISTS customer_order;
 DROP TABLE IF EXISTS bill;
+DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS part;
 DROP TABLE IF EXISTS supplier;
@@ -27,6 +28,20 @@ CREATE TABLE customer (
     email           VARCHAR(255)    NOT NULL UNIQUE,
     phone           VARCHAR(20)     NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- EMPLOYEE
+-- ============================================================
+CREATE TABLE Employee (
+    EmployeeId      INT             AUTO_INCREMENT PRIMARY KEY,
+    FirstName       VARCHAR(100)    NOT NULL,
+    LastName        VARCHAR(100)    NOT NULL,
+    Email           VARCHAR(150)    NULL,
+    PasswordHash    VARCHAR(255)    NULL,
+    CreatedAt       DATETIME        DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE Employee ADD UNIQUE (Email);
 
 -- ============================================================
 -- BILL (invoice issued after delivery)
