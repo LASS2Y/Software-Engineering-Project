@@ -13,6 +13,7 @@ DELETE FROM locker;
 DELETE FROM cabinet;
 DELETE FROM customer_order;
 DELETE FROM bill;
+DELETE FROM Employee;
 DELETE FROM customer;
 DELETE FROM part;
 DELETE FROM supplier;
@@ -21,6 +22,7 @@ DELETE FROM supplier;
 ALTER TABLE supplier AUTO_INCREMENT = 1;
 ALTER TABLE part AUTO_INCREMENT = 1;
 ALTER TABLE supplier_part AUTO_INCREMENT = 1;
+ALTER TABLE Employee AUTO_INCREMENT = 1;
 
 -- ============================================================
 -- SUPPLIERS (from fournisseurs.txt)
@@ -28,6 +30,12 @@ ALTER TABLE supplier_part AUTO_INCREMENT = 1;
 INSERT INTO supplier (id, name, contact_email, phone) VALUES
     (1, 'TRABELBO SA', 'contact@trabelbo.be', '+32 63 00 00 01'),
     (2, 'TraitBois SPRL', 'contact@traitbois.be', '+32 81 00 00 02');
+
+-- ============================================================
+-- EMPLOYEES (default login)
+-- ============================================================
+INSERT INTO Employee (FirstName, LastName, Email, PasswordHash)
+VALUES ('Kitbox', 'Admin', 'Kitbox', '$2a$11$5lJwXxw8erXS4B7ZXCqOcuUwKBgXLbb.IbjJW/op/fYsJbwWpb7cW');
 
 -- ============================================================
 -- PARTS (308 total from kitboxparts.csv)
