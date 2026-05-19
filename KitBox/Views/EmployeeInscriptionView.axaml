@@ -15,15 +15,7 @@
     <!-- Header -->
     <Border Background="#4F46E5" Padding="24" CornerRadius="0,0,24,24">
         <Grid ColumnDefinitions="Auto,*">
-            <Button Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding GotoSecretaryMenuCommand }"
-                    VerticalAlignment="Center"
-                    Classes="BackButton">
-                <TextBlock Text="← Back"
-                           Foreground="White"
-                           FontSize="16"/>
-            </Button>
+           
 
             <TextBlock Grid.Column="1"
                        Text="Register Employee"
@@ -82,7 +74,7 @@
                 <TextBlock Text="Email Address *"
                            FontWeight="SemiBold"/>
                 <TextBox Text="{Binding Email}"
-                         Watermark="john.smith@example.com"
+                         Watermark="john.smith@kitbox.com"
                          CornerRadius="10"/>
             </StackPanel>
 

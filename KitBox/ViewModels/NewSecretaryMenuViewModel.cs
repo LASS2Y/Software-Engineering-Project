@@ -18,6 +18,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(OrderHistoryPageIsActive))]
     [NotifyPropertyChangedFor(nameof(SupplierOrderTrackingPageIsActive))]
     [NotifyPropertyChangedFor(nameof(DashBoardPageIsActive))]
+    [NotifyPropertyChangedFor(nameof(EmployeeInscriptionPageIsActive))]
     
     private ViewModelBase? _currentMenuPage;
     
@@ -25,6 +26,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     public bool SupplierCatalogPageIsActive => CurrentMenuPage == _supplierCatalogPage;
     public bool OrderHistoryPageIsActive => CurrentMenuPage == _orderHistoryPage;
     public bool SupplierOrderTrackingPageIsActive => CurrentMenuPage == _supplierOrderTrackingPage;
+    public bool EmployeeInscriptionPageIsActive => CurrentMenuPage == _employeeInscriptionPage;
 
     public bool DashBoardPageIsActive => CurrentMenuPage == _dashBoardPage;
     
@@ -34,7 +36,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     private readonly OrderHistoryViewModel _orderHistoryPage;
     private readonly SupplierOrderTrackingViewModel _supplierOrderTrackingPage;
     private readonly DashBoardViewModel _dashBoardPage;
-    
+    private readonly EmployeeInscriptionViewModel _employeeInscriptionPage;
 
     public NewSecretaryMenuViewModel(MainViewModel main)
     {
@@ -44,6 +46,7 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
         _orderHistoryPage = new OrderHistoryViewModel(_main);
         _supplierOrderTrackingPage = new SupplierOrderTrackingViewModel(_main);
         _dashBoardPage = new DashBoardViewModel(_main);
+        _employeeInscriptionPage = new EmployeeInscriptionViewModel(_main);
         CurrentMenuPage = _orderHistoryPage;
     }
     
@@ -81,6 +84,12 @@ public partial class NewSecretaryMenuViewModel : ViewModelBase
     private void GoToDashBoard()
     {
         CurrentMenuPage = _dashBoardPage;
+    }
+    
+    [RelayCommand]
+    private void GoToEmployeeInscription()
+    {
+        CurrentMenuPage = _employeeInscriptionPage;
     }
 
     [RelayCommand]
