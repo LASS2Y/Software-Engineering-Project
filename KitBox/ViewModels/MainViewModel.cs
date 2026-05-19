@@ -22,7 +22,7 @@ public partial class MainViewModel : ObservableObject
             port:     int.Parse(EnvConfig.Get("DB_PORT", "3306")));
 
         Services = new AppServices(db);
-        CurrentPage = new WelcomePageViewModel(this);
+        CurrentPage = new NewSecretaryMenuViewModel(this);
     }
 
     // ── Navigation helpers called by child ViewModels ────────────────────────────
