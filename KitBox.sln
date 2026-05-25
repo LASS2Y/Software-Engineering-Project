@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBox", "KitBox.csproj", "{91BCE678-60F8-488B-A04F-ADE48B277AF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBox", "KitBox\KitBox.csproj", "{91BCE678-60F8-488B-A04F-ADE48B277AF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitBox.Tests", "KitBox.Tests\KitBox.Tests.csproj", "{5C1A940E-6761-41FA-96A4-E03998B06BBB}"
 EndProject
