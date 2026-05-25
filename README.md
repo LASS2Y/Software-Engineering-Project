@@ -1,303 +1,289 @@
-# Software Engineering Project
-Guide du Projet KitBox (État Actuel)
-
-Ce document reflète l'état actuel de l'implémentation du projet et le met en relation avec le contexte métier défini dans context.md.
-1. Portée du Projet
-
-KitBox est une application de bureau utilisée en magasin pour configurer des commandes d'armoires et gérer les opérations de stock et de fournisseurs.
-
-Objectifs métier principaux issus de context.md :
-
-    Réduire les erreurs de préparation de commande en numérisant la composition des armoires.
-
-    Gérer la disponibilité partielle avec acompte et retrait différé.
-
-    Optimiser la gestion des stocks :
-
-        une pièce peut être fournie par plusieurs fournisseurs,
-
-        le stock minimum est piloté par l'historique des ventes,
-
-        la sélection du fournisseur suit le meilleur prix, puis le meilleur délai de livraison.
-
-2. Technologie et Architecture
-
-    Langage : C# (.NET 9.0)
-
-    Interface utilisateur (UI) : Avalonia 11.3.6 (MVVM)
-
-    Base de données : MariaDB/MySQL via MySqlConnector
-
-    Pattern : Architecture en couches
-
-        Vue (.axaml)
-
-        ViewModel
-
-        Services (logique métier)
-
-        Repositories (accès aux données)
-
-La composition des dépendances est centralisée dans KitBox/AppServices.cs.
-3. Aperçu de l'État Fonctionnel
-3.1 Flux de commande client
-
-Implémenté :
-
-    Saisie de l'identité du client (client nommé ou invité).
-
-    Configuration de l'armoire avec 1 à 7 casiers.
-
-    Contraintes des casiers :
-
-        dimensions et couleurs autorisées selon le catalogue,
-
-        largeurs restreintes lorsque les portes sont activées,
-
-        même largeur pour tous les casiers d'une même armoire.
-
-    Crochet de prévisualisation 3D (WebView + Assets/Web/index.html) recevant l'état sérialisé du casier.
-
-    Aperçu de la commande :
-
-        décomposition en pièces requises,
-
-        vérification du stock par pièce,
-
-        calcul du prix total.
-
-    Passation de commande :
-
-        persistance complète (client, commande, armoire, casiers, lignes de commande),
-
-        déduction de stock pour les quantités disponibles,
-
-        support de la disponibilité partielle avec acompte.
-
-3.2 Optimisation des fournisseurs et des stocks
-
-Implémenté :
-
-    CRUD du catalogue fournisseur (supplier_part) par le secrétaire.
-
-    Stratégie du meilleur fournisseur implémentée dans le service + tri SQL :
-
-        prix croissant (ASC),
-
-        jours de livraison croissant (ASC) en cas d'égalité.
-
-    Calcul dynamique du stock minimum basé sur l'historique des ventes :
-
-        requête des quantités vendues récentes depuis order_line + customer_order.order_date,
-
-        minimum recommandé = max(valeur par défaut, arrondi.sup(ventes quotidiennes moyennes * jours de couverture)).
-
-    Tableau de bord de stock bas avec statut de risque au niveau de la ligne.
-
-    Action de réapprovisionnement de la gestion des stocks :
-
-        bouton dans le tableau de stock pour passer une commande fournisseur depuis une ligne en rupture,
-
-        quantité par défaut égale à l'écart minimum,
-
-        fournisseur choisi selon le meilleur prix puis le meilleur délai,
-
-        persisté dans supplier_order.
-
-3.3 Processus commercial (acompte, livraison, facturation)
-
-Implémenté :
-
-    Si toutes les pièces ne sont pas en stock, la commande est marquée PartiallyAvailable (Partiellement Disponible) et un acompte est enregistré.
-
-    Les quantités manquantes sont automatiquement approvisionnées lors de la commande auprès des meilleurs fournisseurs.
-
-    La date de disponibilité (available_date) est recalculée en utilisant le délai de livraison du fournisseur le plus lent parmi les commandes fournisseurs générées.
-
-    Flux de statut de l'historique des commandes avec actions du secrétaire :
-
-        PartiallyAvailable -> Available -> Delivered,
-
-        annulation (sauf pour les commandes livrées/annulées).
-
-    Génération de facture à l'étape livrée :
-
-        montant de la facture = montant total de la commande - acompte.
-
-    Exportation TXT des documents de paiement :
-
-        reçu d'acompte généré à la confirmation de commande partielle,
-
-        facture de paiement final générée lors de la création de la facture,
-
-        exporté dans le dossier "Téléchargements" de l'utilisateur.
-
-4. État de la Base de Données (Mis à jour)
-
-Le schéma actuel inclut :
-
-    customer (client)
-
-    bill (facture)
-
-    customer_order (commande client)
-
-    cabinet (armoire)
-
-    locker (casier)
-
-    part (pièce)
-
-    order_line (ligne de commande)
-
-    supplier (fournisseur)
-
-    supplier_part (pièce fournisseur)
-
-    supplier_order (commande fournisseur)
-
-Notes :
-
-    part utilise l'héritage par table unique (discriminateur part_type).
-
-    supplier_order.customer_order_id est nullable :
-
-        lié aux commandes pour l'approvisionnement en cas de pénurie client,
-
-        nul pour les commandes de réapprovisionnement pur de gestion de stock.
-
-5. Correspondance Processus Métier vs Contexte
-Exigence A : une pièce peut être fournie par plusieurs fournisseurs
-
-Statut : Implémenté.
-
-    Le modèle de données supporte la relation N:N via supplier_part.
-
-    Le secrétaire gère les tarifs et délais des fournisseurs.
-
-Exigence B : stock minimum déterminé par l'historique des ventes
-
-Statut : Implémenté (logique), nécessite une fiabilisation opérationnelle.
-
-    Les ventes historiques sont agrégées à partir des lignes de commande passées.
-
-    Le stock minimum est périodiquement actualisé lors du rafraîchissement du tableau de bord.
-
-Exigence C : fournisseur sélectionné par meilleur prix, puis meilleur délai
-
-Statut : Implémenté.
-
-    Appliqué à deux endroits :
-
-        approvisionnement automatique lors d'une pénurie sur une commande client,
-
-        action de réapprovisionnement de la gestion des stocks.
-
-6. Processus Détaillés Implémentés
-6.1 Processus de commande client
-
-    L'utilisateur crée ou sélectionne l'identité d'un client.
-
-    L'utilisateur configure l'armoire et les casiers.
-
-    Le service de validation vérifie les contraintes dimensionnelles et métier.
-
-    L'aperçu de la commande décompose l'armoire en pièces et vérifie la disponibilité.
-
-    À la confirmation :
-
-        les données de la commande sont stockées,
-
-        le stock disponible est consommé,
-
-        les quantités manquantes déclenchent des commandes fournisseurs,
-
-        la disponibilité prévue est calculée,
-
-        un reçu d'acompte TXT est généré le cas échéant.
-
-6.2 Processus de gestion des stocks
-
-    Le rafraîchissement du tableau de bord recalcule le stock minimum à partir des ventes récentes.
-
-    Les pièces en sous-stock sont mises en évidence.
-
-    Le secrétaire peut :
-
-        ajuster manuellement la quantité en stock,
-
-        cliquer sur Order pour passer une commande de réapprovisionnement auprès du meilleur fournisseur.
-
-    La confirmation de la commande fournisseur est affichée dans la bannière de statut de l'interface.
-
-6.3 Processus de facturation
-
-    Le secrétaire marque la progression du cycle de vie de la commande.
-
-    À l'état Delivered (Livré), le secrétaire génère la facture.
-
-    La facture est stockée et liée à la commande.
-
-    La facture de paiement final TXT est exportée dans "Téléchargements".
-
-7. Ce Qu'il Reste à Faire (Priorités)
-
-Cette section met en évidence les lacunes restantes avec une forte priorité sur le risque métier.
-7.1 Lacunes métier critiques
-
-    Pas de flux de réception fournisseur
-
-        Les commandes fournisseurs sont créées, mais il n'y a pas de processus de réception formel (pas d'interface de transition de statut, pas d'incrémentation automatique du stock, pas de recalcul pour passer les commandes clients en attente à Available).
-
-    Pas de module de transaction de paiement
-
-        Les montants sont enregistrés, mais aucune opération de paiement réelle n'existe (historique d'audit, numérotation des reçus, etc.).
-
-    Pas de transaction de commande sécurisée (Rollback)
-
-        PlaceOrder effectue plusieurs écritures sans frontières de transaction DB. Un échec partiel peut laisser des données incohérentes.
-
-    L'annulation ne restaure pas le stock
-
-        Annuler une commande ne met à jour que le statut, sans logique de compensation pour les stocks déduits ou réservés.
-
-7.2 Lacunes de processus importantes
-
-    Pas de recherche/réutilisation de la base client : Risque de doublons.
-
-    Pas de système de notification : Le client n'est pas prévenu automatiquement quand sa commande est disponible.
-
-    Visibilité limitée des commandes fournisseurs : Pas d'écran dédié pour lister/filtrer et suivre les livraisons attendues.
-
-    Pas de consolidation des achats : Le réapprovisionnement se fait par ligne ; pas de groupement par fournisseur pour optimiser les commandes.
-
-7.3 Qualité et dette technique
-
-    Absence de tests automatisés (unitaires et intégration).
-
-    Gestion de la concurrence absente : Risque de survente si deux commandes sont passées simultanément.
-
-    E/S Asynchrones non adoptées dans la couche repository.
-
-    Observabilité minimale : Pas de logs structurés ni de pistes d'audit.
-
-8. Feuille de Route Recommandée
-Phase 1 (Stabilisation indispensable)
-
-    Encapsuler PlaceOrder dans des transactions SQL.
-
-    Implémenter le flux de réception fournisseur et la mise à jour des stocks.
-
-    Ajouter la réévaluation automatique des commandes en attente après réception fournisseur.
-
-    Ajouter la logique de compensation de stock pour les annulations.
-
-Phase 2 (Complétude du processus)
-
-    Écran de gestion des commandes fournisseurs.
-
-    Recherche/fusion de clients pour éviter les doublons.
-
-    Pipeline de notification (e-mail/SMS) pour la disponibilité.
-
-    Export PDF des factures/reçus avec mise en forme légale.
+# KitBox - In-store Cabinet Ordering and Inventory System
+
+KitBox is a desktop application used in store to configure modular cabinets, validate orders, and manage stock and supplier purchasing. It replaces the paper order process with a guided workflow that prevents invalid cabinet combinations and automates procurement when items are missing.
+
+Note: `context.md` requires documentation and diagrams in English. This README is written in English to comply.
+
+## Table of contents
+
+1. Overview
+2. How the application works
+3. Core business rules and validations
+4. Architecture and modules
+5. Database schema
+6. Business logic details
+7. Setup and run
+8. Requirements coverage (context.md)
+
+## 1. Overview
+
+The application supports three main roles:
+
+- Customer flow: configure a cabinet (1 to 7 lockers), preview parts and pricing, and place an order.
+- Secretary flow: maintain supplier catalogs, manage stock, track orders, and generate invoices.
+- Owner/manager flow: monitor stock health and trigger replenishment.
+
+Key outcomes:
+
+- Reduce order mistakes by validating cabinet constraints and parts compatibility.
+- Support partial availability with deposit handling and later pickup.
+- Optimize stock and suppliers based on price, delivery time, and sales history.
+
+## 2. How the application works
+
+End-to-end flow (typical order):
+
+1. Employee signs in and selects the customer context.
+2. The cabinet is configured (locker sizes, colors, optional doors).
+3. The system decomposes the cabinet into required parts and checks stock.
+4. A full price and availability preview is presented.
+5. On confirmation:
+   - The order, cabinet, lockers, and order lines are persisted.
+   - Stock is deducted for available quantities.
+   - Missing quantities trigger supplier orders automatically.
+   - The availability date is calculated based on supplier lead times.
+6. Order lifecycle progresses: Pending -> PartiallyAvailable -> Available -> Delivered.
+7. At delivery, the invoice is generated and exported.
+
+## 3. Core business rules and validations
+
+These rules are enforced in the services layer and reflected in the UI:
+
+- A cabinet contains 1 to 7 lockers.
+- All lockers inside the same cabinet share the same width.
+- Door widths are constrained to available door sizes.
+- Panel color is consistent per locker, door color can differ.
+- Total locker height = batten height + 2 x 2 cm (crossbars).
+- Angle iron length = sum of total heights for all lockers.
+- Parts are not stored as cabinets; cabinets are decomposed into parts.
+
+## 4. Architecture and modules
+
+The application uses MVVM with a layered architecture:
+
+- Views (.axaml): UI layout and bindings.
+- ViewModels: UI logic, commands, navigation.
+- Services: business rules and calculations.
+- DataAccess: repositories for SQL persistence.
+
+Important services:
+
+- `CatalogService`: available dimensions and colors.
+- `LockerValidationService`: cabinet validation rules.
+- `AngleIronCalculatorService`: total height and angle iron length.
+- `OrderService`: order preview, persistence, and status transitions.
+- `StockService`: stock checks and adjustments.
+- `SupplierSelectionService`: best supplier by price then delivery.
+- `InvoiceExportService`: TXT exports for deposit and final invoice.
+- `SupplierOrderTrackingService`: supplier order status handling.
+
+## 5. Database schema
+
+Source of truth: `schema.sql`. Core tables:
+
+- `Employee`: authenticated users (passwords stored as BCrypt hashes).
+- `Customer`: client identity and contact.
+- `Customer_Order`: order header, status, deposit, availability date.
+- `Cabinet` and `Locker`: cabinet structure.
+- `Part`: all parts using single-table inheritance (STI).
+- `Order_Line`: quantities and prices of parts in an order.
+- `Supplier` and `Supplier_Part`: supplier catalog with prices and lead times.
+- `Supplier_Order`: purchase orders triggered by shortages.
+- `Bill`: invoices generated at delivery.
+
+Entity-relationship diagram:
+
+```mermaid
+erDiagram
+    EMPLOYEE {
+        int EmployeeId PK
+        string FirstName
+        string LastName
+        string Email UK
+        string PasswordHash
+        datetime CreatedAt
+    }
+
+    CUSTOMER {
+        int id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone
+    }
+
+    CUSTOMER_ORDER {
+        int id PK
+        int customer_id FK
+        int bill_id FK "nullable"
+        date order_date
+        decimal deposit "nullable"
+        date available_date "nullable"
+        enum status
+    }
+
+    BILL {
+        int id PK
+        date emission_date
+        decimal amount
+    }
+
+    CABINET {
+        int id PK
+        int order_id FK
+        string angle_iron_color
+    }
+
+    LOCKER {
+        int id PK
+        int cabinet_id FK
+        double height
+        double width
+        double depth
+        string color
+        boolean has_doors
+        string door_color "nullable"
+    }
+
+    PART {
+        int id PK
+        string reference UK
+        string name
+        string part_type
+        double height
+        double width
+        double depth
+        string color
+        decimal unit_price
+        int stock_quantity
+        int minimum_stock
+        enum panel_type "nullable"
+        enum crossbar_type "nullable"
+        int groove_count "nullable"
+        double standard_length "nullable"
+        boolean is_glass "nullable"
+    }
+
+    ORDER_LINE {
+        int id PK
+        int order_id FK
+        int part_id FK
+        int quantity
+        decimal unit_price
+    }
+
+    SUPPLIER {
+        int id PK
+        string name
+        string contact_email
+        string phone
+    }
+
+    SUPPLIER_PART {
+        int id PK
+        int supplier_id FK
+        int part_id FK
+        decimal price
+        int delivery_days
+    }
+
+    SUPPLIER_ORDER {
+        int id PK
+        int customer_order_id FK "nullable"
+        int part_id FK
+        int supplier_id FK
+        int quantity
+        decimal unit_cost
+        int delivery_days
+        date ordered_at
+        date expected_delivery_date
+        string status
+    }
+
+    CUSTOMER ||--o{ CUSTOMER_ORDER : places
+    CUSTOMER_ORDER |o--o| BILL : generates
+    CUSTOMER_ORDER ||--o{ ORDER_LINE : contains
+    CUSTOMER_ORDER ||--o{ CABINET : includes
+    CABINET ||--|{ LOCKER : composed_of
+    ORDER_LINE }o--|| PART : references
+    SUPPLIER ||--o{ SUPPLIER_PART : offers
+    SUPPLIER_PART }o--|| PART : supplies
+    CUSTOMER_ORDER ||--o{ SUPPLIER_ORDER : triggers
+    SUPPLIER ||--o{ SUPPLIER_ORDER : fulfills
+    PART ||--o{ SUPPLIER_ORDER : requested
+```
+
+## 6. Business logic details
+
+Order preview and parts decomposition:
+
+- Lockers are expanded into required parts (panels, crossbars, battens, doors, handles).
+- Each required part is matched to the catalog (`Part` table).
+- Availability and total price are computed before confirmation.
+
+Stock and supplier logic:
+
+- Minimum stock is computed from sales history using `order_line` and `customer_order.order_date`.
+- When an item is missing, a supplier order is created.
+- Supplier selection is ordered by lowest price, then shortest delivery time.
+
+Order lifecycle:
+
+- If all parts are in stock, the order is fully available.
+- If not, the order moves to PartiallyAvailable and a deposit is recorded.
+- Availability date is based on the longest supplier lead time.
+- On delivery, the invoice amount equals total price minus deposit.
+- TXT receipts and invoices are exported to the user Downloads folder.
+
+## 7. Setup and run
+
+Prerequisites:
+
+- .NET SDK 9.0
+- MariaDB or MySQL
+
+Database setup:
+
+```bash
+mysql -u root -p < schema.sql
+mysql -u root -p kitbox < seed.sql
+```
+
+Environment configuration:
+
+Create `KitBox/.env`:
+
+```dotenv
+DB_SERVER=localhost
+DB_NAME=kitbox
+DB_USER=root
+DB_PASSWORD=your_password
+DB_PORT=3306
+```
+
+Run the application:
+
+```bash
+cd KitBox
+dotnet run
+```
+
+Default employee login (seeded):
+
+- Email: Kitbox
+- Password: kitbox 2026
+
+## 8. Requirements coverage (context.md)
+
+Below is a direct mapping to the context requirements:
+
+- Digitize cabinet ordering to reduce errors: UI-driven configuration, validation services, and parts preview prevent incompatible orders.
+- Partial availability with deposit and later pickup: `customer_order.status`, `deposit`, and `available_date` model this flow; invoices are issued at delivery.
+- Multiple suppliers per part: `supplier_part` implements the many-to-many relationship.
+- Minimum stock from sales history: stock thresholds are recalculated from historical `order_line` data.
+- Best supplier by price then delivery time: enforced by `SupplierSelectionService` and SQL ordering.
+- Cabinet composition rules: locker validation, angle iron length calculation, and parts decomposition match the domain rules.
+- Extensibility for new components: `Part` uses single-table inheritance with a `part_type` discriminator and type-specific columns.
+- SOLID architecture: responsibilities are split across ViewModels, Services, and Repositories, with interfaces at the DataAccess boundary.
+
+If strict compliance with the language constraints in `context.md` is required (English UI strings and comments), review remaining UI labels and messages for translation.

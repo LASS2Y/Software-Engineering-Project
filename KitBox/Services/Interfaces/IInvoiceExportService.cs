@@ -13,7 +13,8 @@ public record InvoiceExportRequest(
     decimal DepositAmount,
     decimal AmountPaid,
     decimal RemainingAmount,
-    string Notes
+    string Notes,
+    DateTime? EstimatedAvailableDate = null
 );
 
 /// <summary>

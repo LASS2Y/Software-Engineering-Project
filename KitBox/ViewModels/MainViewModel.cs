@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using KitBox.DataAccess;
+using KitBox.Views;
 
 namespace KitBox.ViewModels;
 
@@ -7,7 +8,7 @@ public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
     private ViewModelBase _currentPage = null!;
-
+    
     public AppServices Services { get; }
 
     public MainViewModel()
@@ -21,7 +22,7 @@ public partial class MainViewModel : ObservableObject
             port:     int.Parse(EnvConfig.Get("DB_PORT", "3306")));
 
         Services = new AppServices(db);
-        CurrentPage = new StartPageViewModel(this);
+        CurrentPage = new NewSecretaryMenuViewModel(this);
     }
 
     // ── Navigation helpers called by child ViewModels ────────────────────────────
@@ -32,11 +33,14 @@ public partial class MainViewModel : ObservableObject
     public void GoToCustomerSelection()
         => NavigateTo(new CustomerSelectionViewModel(this));
 
+    public void GoToDashboard()
+        => NavigateTo(new DashBoardViewModel(this));
+
     public void GoToOwnerDashboard()
         => NavigateTo(new OwnerDashboardViewModel(this));
 
     public void GoToSecretaryMenu()
-        => NavigateTo(new SecretaryMenuViewModel(this));
+        => NavigateTo(new NewSecretaryMenuViewModel(this));
 
     public void GoToSupplierCatalog()
         => NavigateTo(new SupplierCatalogViewModel(this));
@@ -57,4 +61,9 @@ public partial class MainViewModel : ObservableObject
                                   System.Collections.Generic.List<Models.Locker> lockers,
                                   string angleIronColor)
         => NavigateTo(new OrderSummaryViewModel(this, customer, lockers, angleIronColor));
+
+    public void GoToWelcomePage()
+        => NavigateTo(new WelcomePageViewModel(this));
+    public void GoToEmployeeInscription()
+        => NavigateTo(new EmployeeInscriptionViewModel(this));
 }

@@ -92,14 +92,34 @@ public partial class OrderSummaryViewModel : ViewModelBase
                     DepositAmount: DepositAmount ?? 0m,
                     AmountPaid: DepositAmount ?? 0m,
                     RemainingAmount: TotalPrice - (DepositAmount ?? 0m),
-                    Notes: "Deposit received for a partially available order."
+                    Notes: "Deposit received for a partially available order. Remaining balance is due at pickup.",
+                    EstimatedAvailableDate: order.AvailableDate
+                );
+                documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
+            }
+            else if (AllPartsAvailable)
+            {
+                var request = new InvoiceExportRequest(
+                    DocumentType: "Immediate_Payment_Invoice",
+                    OrderId: order.Id,
+                    BillId: null,
+                    CustomerName: CustomerName,
+                    CustomerEmail: _customer.Email,
+                    IssuedAt: DateTime.Today,
+                    TotalAmount: TotalPrice,
+                    DepositAmount: 0m,
+                    AmountPaid: TotalPrice,
+                    RemainingAmount: 0m,
+                    Notes: "Order fully available at creation. Full amount paid.",
+                    EstimatedAvailableDate: order.AvailableDate
                 );
                 documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
             }
 
             OrderPlaced = true;
             StatusMessage = AllPartsAvailable
-                ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup."
+                ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup." +
+                  (documentPath == null ? string.Empty : $"\nTXT invoice downloaded: {documentPath}")
                 : $"✓  Order #{order.Id} recorded. Deposit required: €{DepositAmount:F2}." +
                   $"\nExpected availability: {order.AvailableDate?.ToString("dd/MM/yyyy") ?? "N/A"}." +
                   (documentPath == null ? string.Empty : $"\nTXT receipt downloaded: {documentPath}");
@@ -116,5 +136,5 @@ public partial class OrderSummaryViewModel : ViewModelBase
 
     [RelayCommand]
     public void ReturnToStart()
-        => _main.NavigateTo(new StartPageViewModel(_main));
+        => _main.NavigateTo(new WelcomePageViewModel(_main));
 }

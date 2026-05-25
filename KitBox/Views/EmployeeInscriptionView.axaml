@@ -1,33 +1,24 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-             x:Class="KitBox.Views.CustomerSelectionView"
+             x:Class="KitBox.Views.EmployeeInscriptionView"
              xmlns:vm="clr-namespace:KitBox.ViewModels"
-             x:DataType="vm:CustomerSelectionViewModel">
+             x:DataType="vm:EmployeeInscriptionViewModel">
 
     <UserControl.Styles>
         <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
     </UserControl.Styles>
-
-   <Grid Background="#F5F7FA" RowDefinitions="Auto,*">
+    <Grid Background="#F5F7FA" RowDefinitions="Auto,*">
 
     <!-- Header -->
     <Border Background="#4F46E5" Padding="24" CornerRadius="0,0,24,24">
         <Grid ColumnDefinitions="Auto,*">
-            <Button Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding GoToWelcomePageCommand}"
-                    VerticalAlignment="Center"
-                    Classes="BackButton">
-                <TextBlock Text="← Back"
-                           Foreground="White"
-                           FontSize="16"/>
-            </Button>
+           
 
             <TextBlock Grid.Column="1"
-                       Text="Login"
+                       Text="Register Employee"
                        FontSize="26"
                        FontWeight="Bold"
                        Foreground="White"
@@ -36,7 +27,11 @@
         </Grid>
     </Border>
 
-    <!-- Login Card -->
+    <!-- Register Card -->
+    <ScrollViewer Grid.Row="1"
+                  HorizontalScrollBarVisibility="Hidden"
+                  VerticalScrollBarVisibility="Hidden"
+                  Margin="0">
     <Border Grid.Row="1"
             Background="White"
             MaxWidth="540"
@@ -50,34 +45,52 @@
         <StackPanel Spacing="20">
 
             <StackPanel Spacing="6">
-                <TextBlock Text="Welcome back"
+                <TextBlock Text="Create a new employee account"
                            FontSize="24"
                            FontWeight="Bold"
                            Foreground="#0F172A"/>
-                <TextBlock Text="Please enter your credentials to continue."
+                <TextBlock Text="Fill in the employee information below."
                            FontSize="15"
                            Foreground="#64748B"
                            TextWrapping="Wrap"/>
             </StackPanel>
 
+            <!-- First name -->
+            <StackPanel Spacing="6">
+                <TextBlock Text="First Name *"
+                           FontWeight="SemiBold"/>
+                <TextBox Text="{Binding FirstName}"
+                         Watermark="John"
+                         CornerRadius="10"/>
+            </StackPanel>
+
+            <!-- Last name -->
+            <StackPanel Spacing="6">
+                <TextBlock Text="Last Name *"
+                           FontWeight="SemiBold"/>
+                <TextBox Text="{Binding LastName }"
+                         Watermark="Smith"
+                         CornerRadius="10"/>
+            </StackPanel>
+
             <!-- Email -->
             <StackPanel Spacing="6">
-                <TextBlock Text="Email Address"
+                <TextBlock Text="Email Address *"
                            FontWeight="SemiBold"/>
                 <TextBox Text="{Binding Email}"
-                         Watermark="john.smith@example.com"
+                         Watermark="john.smith@kitbox.com"
                          CornerRadius="10"/>
             </StackPanel>
 
             <!-- Password -->
             <StackPanel Spacing="6">
-                <TextBlock Text="Password"
+                <TextBlock Text="Password *"
                            FontWeight="SemiBold"/>
                 <Grid ColumnDefinitions="*,Auto">
                     <TextBox x:Name="PasswordBox"
                              Grid.Column="0"
                              Text="{Binding Password}"
-                             Watermark="Enter your password"
+                             Watermark="Enter a password"
                              PasswordChar="●"
                              CornerRadius="10"/>
                     <ToggleButton Grid.Column="1"
@@ -88,29 +101,36 @@
                 </Grid>
             </StackPanel>
 
-            <!-- Remember me / forgot password -->
-            <Grid ColumnDefinitions="Auto,*">
-                <CheckBox Content="Remember me"
-                          IsChecked="{Binding }"
-                          VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1"
-                           Text="Forgot password?"
-                           Foreground="#4F46E5"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"/>
-            </Grid>
+            <!-- Confirm password -->
+            <StackPanel Spacing="6">
+                <TextBlock Text="Confirm Password *"
+                           FontWeight="SemiBold"/>
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox x:Name="ConfirmPasswordBox"
+                             Grid.Column="0"
+                             Text="{Binding ConfirmPassword }"
+                             Watermark="Repeat the password"
+                             PasswordChar="●"
+                             CornerRadius="10"/>
+                    <ToggleButton Grid.Column="1"
+                                  Margin="8,0,0,0"
+                                  Content="Show"
+                                  IsChecked="{Binding #ConfirmPasswordBox.RevealPassword}"
+                                  VerticalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
 
             <!-- Validation error -->
-            <Border IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+            <Border IsVisible="{Binding  Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                     Background="#FEE2E2"
                     CornerRadius="8"
                     Padding="12">
-                <TextBlock Text="{Binding ErrorMessage}"
+                <TextBlock Text="{Binding ErrorMessage }"
                            Foreground="#DC2626"
                            TextWrapping="Wrap"/>
             </Border>
 
-            <!-- Login button == loginCommand --> 
+            <!-- Register button -->
             <Button HorizontalAlignment="Stretch"
                     Height="52"
                     Background="#4F46E5"
@@ -118,9 +138,9 @@
                     CornerRadius="12"
                     FontSize="16"
                     FontWeight="Bold"
-                    Command="{Binding LoginCommand }" 
+                    Command="{Binding RegisterEmployeeCommand }"
                     Classes="StartPageButton">
-                <TextBlock Text="Login →"
+                <TextBlock Text="Register →"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
             </Button>
@@ -137,7 +157,7 @@
                 <Separator Grid.Column="2" Background="#E2E8F0"/>
             </Grid>
 
-            <!-- Create account 
+            <!-- Cancel button -->
             <Button HorizontalAlignment="Stretch"
                     Height="52"
                     Background="Transparent"
@@ -146,14 +166,15 @@
                     CornerRadius="12"
                     FontSize="15"
                     Foreground="#475569"
-                    Command="{Binding CreateaccountCommand}"
+                    Command="{Binding CancelCommand}"
                     Classes="StartPageButton">
-                <TextBlock Text="Create an account"
+                <TextBlock Text="Cancel"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
             </Button>
-            -->
+
         </StackPanel>
     </Border>
+    </ScrollViewer>
 </Grid>
-</UserControl>
+</UserControl>    

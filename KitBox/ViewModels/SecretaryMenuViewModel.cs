@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using KitBox.DataAccess;
 
 namespace KitBox.ViewModels;
 
@@ -9,10 +10,11 @@ namespace KitBox.ViewModels;
 public partial class SecretaryMenuViewModel : ViewModelBase
 {
     private readonly MainViewModel _main;
-
+    
     public SecretaryMenuViewModel(MainViewModel main)
     {
         _main = main;
+        
     }
 
     [RelayCommand]
@@ -33,5 +35,11 @@ public partial class SecretaryMenuViewModel : ViewModelBase
 
     [RelayCommand]
     public void Back()
-        => _main.NavigateTo(new StartPageViewModel(_main));
+        => _main.NavigateTo(new WelcomePageViewModel(_main));
+
+    [RelayCommand]
+    public void GoToEmployeeInscription()
+
+        => _main.GoToEmployeeInscription();
+
 }

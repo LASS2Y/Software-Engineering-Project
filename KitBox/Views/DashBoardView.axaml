@@ -1,0 +1,210 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="KitBox.Views.DashBoardView"
+             xmlns:vm="clr-namespace:KitBox.ViewModels"
+             x:DataType="vm:DashBoardViewModel">
+  
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+    </UserControl.Styles>
+    
+     <Grid Background="#F8FAFC"
+          RowDefinitions="Auto,Auto,*"
+          RowSpacing="24"
+          Margin="16">
+
+        <!-- Titre principal -->
+        <TextBlock Grid.Row="0"
+                   Text="Dashboard KitBox"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Margin="0,0,0,16" />
+
+        <!-- KPIs principaux (6 cartes) -->
+        <UniformGrid Grid.Row="1"
+                     Columns="3"
+                     Rows="2"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     RowSpacing="12"
+                     ColumnSpacing="12">
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Nbr de pièces en rupture"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Chiffre d'affaires (CA)"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Total de pièces commandées"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Matériau le plus utilisé"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Nombre de commandes"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Taux de commandes avec acompte"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding }"/>
+                </StackPanel>
+            </Border>
+
+        </UniformGrid>
+
+        <!-- Zone de graphiques (scroll horizontal) -->
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Margin="0">
+
+            <Grid ColumnDefinitions="*,*,*,*,*,*"
+                  ColumnSpacing="16">
+
+                <!-- Graph 1 : Évolution du nombre de commandes -->
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Évolution du nombre de commandes"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- Exemple de PlotView -->
+                            <!-- <oxy:PlotView DataContext="{Binding CommandePlotModel}" 
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 2 : Répartition des commandes par type de casier -->
+                <Border Grid.Column="1" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Répartition des casiers par type"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding CasierPiePlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 3 : Stock de pièces critiques -->
+                <Border Grid.Column="2" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Stock des pièces critiques"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding StockPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 4 : Revenus par mois -->
+                <Border Grid.Column="3" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Revenus par mois (€)"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding RevenusMensuelsPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 5 : Taux de compatibilité des armoires -->
+                <Border Grid.Column="4" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Taux de conformité des commandes"
+                                   FontWeight="Bold"/>
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding ConformitePlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Graph 6 : Fournisseurs par type de pièce -->
+                <Border Grid.Column="5" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Pièces par fournisseur"
+                                   FontWeight="Bold"
+                                   />
+                        <Border Background="#11111B"
+                                BorderThickness="1"
+                                BorderBrush="#334155"
+                                CornerRadius="6"
+                                Padding="12"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <!-- <oxy:PlotView DataContext="{Binding FournisseursPlotModel}"
+                                           Height="240"/> -->
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

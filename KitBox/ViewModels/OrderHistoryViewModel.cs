@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KitBox.DataAccess;
 using KitBox.Models;
 using KitBox.Models.Enums;
 using KitBox.Services.Interfaces;
@@ -133,12 +134,45 @@ public partial class OrderItemViewModel : ViewModelBase
     {
         try
         {
+            // Restore only the quantity that was actually consumed from stock at order creation.
+            RestoreStockForCancellation();
+
             Order.Status = OrderStatus.Cancelled;
             _parent.Main.Services.OrderRepository.Update(Order);
             RefreshProps();
             _parent.SetStatus($"Order #{OrderId} cancelled.");
         }
         catch (Exception ex) { _parent.SetStatus($"Error: {ex.Message}"); }
+    }
+
+    private void RestoreStockForCancellation()
+    {
+        var lines = _parent.Main.Services.OrderLineRepository.GetByOrderId(Order.Id);
+        if (lines.Count == 0)
+            return;
+
+        var requiredByPart = lines
+            .GroupBy(l => l.PartId)
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+        var missingByPart = _parent.Main.Services.SupplierOrderRepository
+            .GetByCustomerOrderId(Order.Id)
+            .GroupBy(so => so.PartId)
+            .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+        foreach (var (partId, requiredQty) in requiredByPart)
+        {
+            int missingQty = missingByPart.TryGetValue(partId, out int value) ? value : 0;
+            int consumedQty = Math.Max(0, requiredQty - missingQty);
+            if (consumedQty <= 0)
+                continue;
+
+            var part = _parent.Main.Services.PartRepository.GetById(partId);
+            if (part == null)
+                continue;
+
+            _parent.Main.Services.PartRepository.UpdateStock(partId, part.StockQuantity + consumedQty);
+        }
     }
 
     private void RefreshProps()
@@ -162,6 +196,7 @@ public partial class OrderItemViewModel : ViewModelBase
 public partial class OrderHistoryViewModel : ViewModelBase
 {
     public MainViewModel Main { get; }
+    
 
     public OrderHistoryViewModel(MainViewModel main)
     {

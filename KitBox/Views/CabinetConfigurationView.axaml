@@ -92,6 +92,7 @@
                                                       SelectedItem="{Binding DoorColor}"
                                                       HorizontalAlignment="Stretch"/>
                                         </StackPanel>
+                                        
 
                                     </Grid>
                                 </Border>
