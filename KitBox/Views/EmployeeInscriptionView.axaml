@@ -28,6 +28,10 @@
     </Border>
 
     <!-- Register Card -->
+    <ScrollViewer Grid.Row="1"
+                  HorizontalScrollBarVisibility="Hidden"
+                  VerticalScrollBarVisibility="Hidden"
+                  Margin="0">
     <Border Grid.Row="1"
             Background="White"
             MaxWidth="540"
@@ -171,5 +175,6 @@
 
         </StackPanel>
     </Border>
+    </ScrollViewer>
 </Grid>
 </UserControl>    
