@@ -121,10 +121,10 @@ public partial class OrderItemViewModel : ViewModelBase
                 RemainingAmount: 0m,
                 Notes: "Final payment received. Balance is now fully settled."
             );
-            string documentPath = _parent.Main.Services.InvoiceExportService.ExportTxt(request);
+            string documentPath = _parent.Main.Services.InvoiceExportService.ExportPdf(request);
 
             RefreshProps();
-            _parent.SetStatus($"Bill #{bill.Id} generated for Order #{OrderId} — Amount: €{bill.Amount:F2} | TXT downloaded: {documentPath}");
+            _parent.SetStatus($"Bill #{bill.Id} generated for Order #{OrderId} — Amount: €{bill.Amount:F2} | PDF downloaded: {documentPath}");
         }
         catch (Exception ex) { _parent.SetStatus($"Error: {ex.Message}"); }
     }

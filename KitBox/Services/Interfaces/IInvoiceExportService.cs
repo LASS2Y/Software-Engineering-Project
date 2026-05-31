@@ -26,4 +26,6 @@ public interface IInvoiceExportService
     /// Creates a txt document in the user's Downloads folder and returns the file path.
     /// </summary>
     string ExportTxt(InvoiceExportRequest request);
+    
+    string ExportPdf(InvoiceExportRequest request);
 }

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cabinet 3D</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #1A202C; overflow: hidden; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    // ─── Renderer ────────────────────────────────────────────────────────────────
+    const canvas = document.getElementById('c');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding       = THREE.sRGBEncoding;
+    renderer.toneMapping          = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure  = 1.1;
+    renderer.physicallyCorrectLights = true;
+
+    // ─── Scene & Camera ──────────────────────────────────────────────────────────
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xFFFFFF);
+
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 5000);
+    camera.position.set(200, 180, 350);
+    camera.lookAt(0, 80, 0);
+
+    // ─── Lighting ────────────────────────────────────────────────────────────────
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
+    dirLight.position.set(300, 500, 400);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.set(4096, 4096);
+    dirLight.shadow.camera.near   = 1;
+    dirLight.shadow.camera.far    = 2000;
+    dirLight.shadow.camera.left   = -300;
+    dirLight.shadow.camera.right  =  300;
+    dirLight.shadow.camera.top    =  300;
+    dirLight.shadow.camera.bottom = -300;
+    dirLight.shadow.bias = -0.001;
+    scene.add(dirLight);
+
+    const fillLight = new THREE.DirectionalLight(0xc8d8ff, 0.3);
+    fillLight.position.set(-200, 200, -300);
+    scene.add(fillLight);
+
+    const groundLight = new THREE.DirectionalLight(0xfff0cc, 0.15);
+    groundLight.position.set(0, -200, 0);
+    scene.add(groundLight);
+
+    // ─── Colors — matching CatalogService exactly ────────────────────────────────
+    const COLOR_MAP = {
+        'White':  0xF0EDE8,  // warm white
+        'Marron': 0x6D4C41,  // warm brown
+        'Galva':  0xB8C4CC,  // galvanized steel grey
+        'Black':  0x212121,  // deep black
+        'Glass':  0xB3D9FF,  // translucent blue glass
+    };
+
+    const ROUGHNESS = { White: 0.75, Marron: 0.80, Galva: 0.35, Black: 0.70, Glass: 0.05 };
+    const METALNESS = { White: 0.00, Marron: 0.00, Galva: 0.65, Black: 0.05, Glass: 0.10 };
+
+    // ─── Material Factory ────────────────────────────────────────────────────────
+    function makeMat(colorName, isGlass) {
+        if (isGlass || colorName === 'Glass') {
+            return new THREE.MeshStandardMaterial({
+                color: 0xB3D9FF, transparent: true, opacity: 0.35,
+                roughness: 0.05, metalness: 0.1,
+            });
+        }
+        return new THREE.MeshStandardMaterial({
+            color:     COLOR_MAP[colorName] ?? 0xF0EDE8,
+            roughness: ROUGHNESS[colorName] ?? 0.80,
+            metalness: METALNESS[colorName] ?? 0.00,
+        });
+    }
+
+    const handleMat = new THREE.MeshStandardMaterial({
+        color: 0xC8C8C8, roughness: 0.25, metalness: 0.85
+    });
+
+    // ─── Orbit Controls ──────────────────────────────────────────────────────────
+    let isDragging = false, lastX = 0, lastY = 0;
+    let rotY = 0.4, rotX = 0.2, zoom = 1.0;
+    const target = new THREE.Vector3(0, 80, 0);
+
+    canvas.addEventListener('mousedown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+    canvas.addEventListener('mouseup',   () => isDragging = false);
+    canvas.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        rotY += (e.clientX - lastX) * 0.01;
+        rotX += (e.clientY - lastY) * 0.01;
+        rotX = Math.max(-1.2, Math.min(1.2, rotX));
+        lastX = e.clientX; lastY = e.clientY;
+    });
+    canvas.addEventListener('wheel', e => {
+        zoom *= e.deltaY > 0 ? 1.1 : 0.9;
+        zoom = Math.max(0.2, Math.min(5, zoom));
+        e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener('touchstart', e => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; });
+    canvas.addEventListener('touchend',   () => isDragging = false);
+    canvas.addEventListener('touchmove',  e => {
+        rotY += (e.touches[0].clientX - lastX) * 0.01;
+        rotX += (e.touches[0].clientY - lastY) * 0.01;
+        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    });
+
+    // ─── Cabinet Builder ─────────────────────────────────────────────────────────
+    let cabinetGroup = null;
+    const PANEL = 1.8;
+
+    // ✅ angleIronColor is now a parameter
+    function buildCabinet(lockers, angleIronColor) {
+        if (cabinetGroup) {
+            scene.remove(cabinetGroup);
+            cabinetGroup.traverse(obj => {
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+                    else obj.material.dispose();
+                }
+            });
+        }
+
+        cabinetGroup = new THREE.Group();
+        scene.add(cabinetGroup);
+        if (!lockers || lockers.length === 0) return;
+
+        // ✅ Angle iron material uses the color chosen by the customer
+        const ironMat = makeMat(angleIronColor || 'Black', false);
+
+        let currentY = 0;
+        const fw = lockers[0].width;
+        const fd = lockers[0].depth;
+
+        lockers.forEach(locker => {
+            const w = locker.width;
+            const h = locker.totalHeight;
+            const d = locker.depth;
+            const c = locker.color || 'White';
+
+            const bodyMat = makeMat(c, c === 'Glass');
+
+            // Body panels
+            addBox(bodyMat, w,     PANEL,          d,  0,               currentY + PANEL / 2,         0);
+            addBox(bodyMat, w,     PANEL,          d,  0,               currentY + h - PANEL / 2,     0);
+            addBox(bodyMat, PANEL, h - 2 * PANEL,  d, -w/2 + PANEL/2,  currentY + h / 2,             0);
+            addBox(bodyMat, PANEL, h - 2 * PANEL,  d,  w/2 - PANEL/2,  currentY + h / 2,             0);
+            addBox(bodyMat, w,     h,           PANEL,  0,              currentY + h / 2, -d/2 + PANEL/2);
+
+            // Doors
+            if (locker.hasDoors) {
+                const dc      = locker.doorColor || c;
+                const doorMat = makeMat(dc, dc === 'Glass');
+                const dw      = w / 2 - PANEL - 0.5;
+                const dh      = h - 2 * PANEL - 1;
+
+                addBox(doorMat, dw, dh, PANEL, -dw/2 - 0.5, currentY + h/2, d/2 + 0.5);
+                addBox(doorMat, dw, dh, PANEL,  dw/2 + 0.5, currentY + h/2, d/2 + 0.5);
+
+                addHandle(-1.2, currentY + h/2, d/2 + PANEL + 1.5);
+                addHandle( 1.2, currentY + h/2, d/2 + PANEL + 1.5);
+            }
+
+            currentY += h;
+        });
+
+        // ✅ Angle irons with customer-chosen color
+        const totalH = currentY;
+        const hw = fw / 2, hd = fd / 2;
+        [[-hw,-hd],[hw,-hd],[-hw,hd],[hw,hd]].forEach(([x, z]) => {
+            addBox(ironMat, 2, totalH, 2, x, totalH / 2, z);
+        });
+
+        target.set(0, totalH / 2, 0);
+    }
+
+    function addBox(mat, w, h, d, x, y, z) {
+        const geo  = new THREE.BoxGeometry(w, h, d);
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x, y, z);
+        mesh.castShadow = mesh.receiveShadow = true;
+        cabinetGroup.add(mesh);
+        const edges = new THREE.EdgesGeometry(geo);
+        mesh.add(new THREE.LineSegments(
+            edges,
+            new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.10 })
+        ));
+    }
+
+    function addHandle(x, y, z) {
+        const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 10, 12), handleMat);
+        bar.position.set(x, y, z);
+        cabinetGroup.add(bar);
+        [-5, 5].forEach(dy => {
+            const cap = new THREE.Mesh(new THREE.SphereGeometry(0.4, 8, 8), handleMat);
+            cap.position.set(x, y + dy, z);
+            cabinetGroup.add(cap);
+        });
+    }
+
+    // ─── Render Loop ─────────────────────────────────────────────────────────────
+    function resize() {
+        const w = canvas.clientWidth, h = canvas.clientHeight;
+        if (canvas.width !== w || canvas.height !== h) {
+            renderer.setSize(w, h, false);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+        }
+    }
+
+    (function animate() {
+        requestAnimationFrame(animate);
+        resize();
+        const r = 420 * zoom;
+        camera.position.x = target.x + r * Math.sin(rotY) * Math.cos(rotX);
+        camera.position.y = target.y + r * Math.sin(rotX);
+        camera.position.z = target.z + r * Math.cos(rotY) * Math.cos(rotX);
+        camera.lookAt(target);
+        renderer.render(scene, camera);
+    })();
+
+    // ─── Public API called from C# ───────────────────────────────────────────────
+    window.updateCabinet = function(jsonString) {
+        try {
+            const data = JSON.parse(jsonString);
+            // ✅ passes both lockers AND angleIronColor
+            buildCabinet(data.lockers, data.angleIronColor);
+        } catch(e) {
+            console.error('updateCabinet error:', e);
+        }
+    };
+
+    // Default display on startup
+    buildCabinet(
+        [{ width: 60, totalHeight: 50, depth: 40, color: 'White', hasDoors: false }],
+        'Black'
+    );
+</script>
+</body>
+</html>

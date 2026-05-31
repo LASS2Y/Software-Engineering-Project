@@ -95,7 +95,7 @@ public partial class OrderSummaryViewModel : ViewModelBase
                     Notes: "Deposit received for a partially available order. Remaining balance is due at pickup.",
                     EstimatedAvailableDate: order.AvailableDate
                 );
-                documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
+                documentPath = _main.Services.InvoiceExportService.ExportPdf(request);
             }
             else if (AllPartsAvailable)
             {
@@ -113,16 +113,16 @@ public partial class OrderSummaryViewModel : ViewModelBase
                     Notes: "Order fully available at creation. Full amount paid.",
                     EstimatedAvailableDate: order.AvailableDate
                 );
-                documentPath = _main.Services.InvoiceExportService.ExportTxt(request);
+                documentPath = _main.Services.InvoiceExportService.ExportPdf(request);
             }
 
             OrderPlaced = true;
             StatusMessage = AllPartsAvailable
                 ? $"✓  Order #{order.Id} confirmed. All parts are ready for pickup." +
-                  (documentPath == null ? string.Empty : $"\nTXT invoice downloaded: {documentPath}")
+                  (documentPath == null ? string.Empty : $"\nPDF invoice downloaded: {documentPath}")
                 : $"✓  Order #{order.Id} recorded. Deposit required: €{DepositAmount:F2}." +
                   $"\nExpected availability: {order.AvailableDate?.ToString("dd/MM/yyyy") ?? "N/A"}." +
-                  (documentPath == null ? string.Empty : $"\nTXT receipt downloaded: {documentPath}");
+                  (documentPath == null ? string.Empty : $"\nPDF receipt downloaded: {documentPath}");
         }
         catch (Exception ex)
         {

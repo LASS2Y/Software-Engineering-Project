@@ -13,6 +13,7 @@
         <AvaloniaResource Include="Assets\**" />
         <None Include="Assets\Web\index.html" CopyToOutputDirectory="Always" />
         <None Include="Assets\Web\textures\*.jpg" CopyToOutputDirectory="Always" />
+        <None Include="Assets\kitbox.png" CopyToOutputDirectory="Always" />
     </ItemGroup>
     
     <ItemGroup>
@@ -31,6 +32,7 @@
         <PackageReference Include="LiveChartsCore" Version="2.0.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0" />
         <PackageReference Include="MySqlConnector" Version="2.4.0" />
+        <PackageReference Include="QuestPDF" Version="2026.5.0" />
         <PackageReference Include="WebView.Avalonia" Version="11.0.0.1" />
         <PackageReference Include="WebView.Avalonia.Desktop" Version="11.0.0.1" />
     </ItemGroup>
